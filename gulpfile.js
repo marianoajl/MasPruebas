@@ -1,4 +1,5 @@
 
+
 /* PLUGINS
 * --------------------------------------------------
 *  Load Gulp plugins
@@ -23,6 +24,8 @@ const imagemin = require("gulp-imagemin");
 const jshint = require("gulp-jshint");
 // Automatiza compilacion sass
 const sass = require("gulp-sass");
+
+sass.compiler = require("sass");
 // Plumber que se encarga de evitar que gulp watch deje de funcionar en caso de un error.
 const plumber = require("gulp-plumber");
 //Ayuda a producir CSS mejor y mejor estructurado con BEM y SUIT
@@ -37,6 +40,10 @@ const nunjucksRender = require("gulp-nunjucks-render");
 const dependents = require('gulp-dependents');
 // File System module
 const fs = require('fs');
+//  Beautify HTML files.
+const htmlbeautify = require('gulp-html-beautify');
+// Prettier CSS Files.
+const prettier = require("gulp-prettier");
 
 /* VARS
  * --------------------------------------------------
@@ -85,15 +92,45 @@ const config = {
  *  Compile SCSS, autoprefix and make sourcemap
  * -------------------------------------------------- */
 function styles() {
-   return gulp
-      .src(config.styles.input, { since: gulp.lastRun(styles) })
-      .pipe(dependents()) // find sass files to re-compile 
-      .pipe(sourcemaps.init())
-      .pipe(sass().on("error", sass.logError))
-      .pipe(postcss([autoprefixer()]))
-      .pipe(sourcemaps.write())
-      .pipe(gulp.dest(config.styles.output))
-      .pipe(browserSync.stream());
+   
+   let optionsPrettier = {
+      arrowParens: "always",
+      bracketSameLine: false,
+      bracketSpacing: true,
+      embeddedLanguageFormatting: "auto",
+      htmlWhitespaceSensitivity: "css",
+      insertPragma: false,
+      jsxSingleQuote: false,
+      printWidth: 80,
+      proseWrap: "preserve",
+      quoteProps: "preserve",
+      requirePragma: false,
+      semi: true,
+      singleQuote: false,
+      trailingComma: "es5",
+      useTabs: false,
+      vueIndentScriptAndStyle: false,
+      tabWidth: 4,
+   };
+
+   return (
+      gulp
+         .src(config.styles.input, { since: gulp.lastRun(styles) })
+         .pipe(dependents()) // find sass files to re-compile
+         .pipe(sourcemaps.init())
+         .pipe(
+            sass({ includePaths: ["./node_modules"] }).on(
+               "error",
+               sass.logError
+            )
+         )
+         .pipe(postcss([autoprefixer()]))
+         .pipe(sourcemaps.write({ addComment: false }))
+         .pipe(prettier(optionsPrettier)) // Aplica Prettier sobre los CSS
+         // .pipe(sass({ outputStyle: "compressed" }).on("error", sass.logError)) // Minifica el CSS.
+         .pipe(gulp.dest(config.styles.output))
+         .pipe(browserSync.stream())
+   );
 }
 
 /* SCRIPTS TASK
@@ -168,21 +205,26 @@ function fileSize() {
 * -------------------------------------------------- */
 
 function views() {
+   let optionsBeautify = {
+      indent_size: 4,
+      preserve_newlines: false,
+   };
    return gulp
       .src(config.html.pages, { base: "src/views" })
       .pipe(plumber())
       .pipe(
-         data(function () {
-            return require(config.html.data);
-            return JSON.parse(fs.readFileSync(config.html.data));
-         })
+            data(function () {
+               return require(config.html.data);
+               return JSON.parse(fs.readFileSync(config.html.data));
+            })
       )
 
       .pipe(
-         nunjucksRender({
-            path: ["src/views"],
-         })
+            nunjucksRender({
+               path: ["src/views"],
+            })
       )
+      .pipe(htmlbeautify(optionsBeautify))
       .pipe(gulp.dest(config.global.output))
       .pipe(browserSync.stream());
 }
