@@ -1,0 +1,6 @@
+@use "variables" as *;
+
+.aside-menu {
+    grid-area: aside-menu;
+    background: $blue;
+}

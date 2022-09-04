@@ -16,13 +16,13 @@ veamos, porque desarrollo también tiene que cargar los estilos de cada página 
 
     <!-- Include Navigation -->
 
-    <main>  
+    <main class="structure">  
         {% block asideMenu %}
             {% include "layout/_aside-menu.njk" %}
         {% endblock %}
-        {% block contenido %}
-            {% include "layout/_contenido.njk" %}
-        {% endblock %}
+        <section class="section">
+            
+        </section>
     </main>
 
 {% endblock %}

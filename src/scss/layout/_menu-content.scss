@@ -1,0 +1,12 @@
+@use "variables" as *;
+
+.structure {
+    width: $width-100;
+    max-width: $max-width;
+    min-height: $min-height;
+    background-color: $red;
+    display: grid;
+    grid-template-columns: $w-aside-menu auto;
+    column-gap: $column-gap;
+    grid-template-areas: "aside-menu content"
+}
