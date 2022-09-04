@@ -1,0 +1,32 @@
+{# extending #}
+{% extends "layout/_default.njk" %}
+<!-- Main CSS file por ahora lo ponemos aca pero tenemos que hacer un condicional en el layout creo, 
+veamos, porque desarrollo también tiene que cargar los estilos de cada página fuera del layout-->
+
+{# import macros #}
+{% import "macros/_button.njk" as btn %}
+
+{# Bloque de estilos especificos de éstá página #}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="content/css/view2.css">
+{% endblock %}
+
+<!-- endbuild -->
+{% block content %}
+
+    <!-- Include Navigation -->
+
+    <main>  
+        {% block asideMenu %}
+            {% include "layout/_aside-menu.njk" %}
+        {% endblock %}
+        {% block contenido %}
+            {% include "layout/_contenido.njk" %}
+        {% endblock %}
+    </main>
+
+{% endblock %}
+{% block js %}
+    {# Bloque de estilos especificos de éstá página #}
+    <script type="text/javascript" src="content/js/view2.js"></script>
+{% endblock %}
