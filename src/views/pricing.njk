@@ -1,0 +1,95 @@
+{# extending #}
+{% extends "layout/_default.njk" %}
+<!-- Main CSS file por ahora lo ponemos aca pero tenemos que hacer un condicional en el layout creo, 
+veamos, porque desarrollo también tiene que cargar los estilos de cada página fuera del layout-->
+
+{# import macros #}
+{% import "macros/_button.njk" as btn %}
+
+{# Bloque de estilos especificos de éstá página #}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="content/css/pricing.css">
+{% endblock %}
+
+<!-- endbuild -->
+{% block content %}
+
+    <!-- Include Navigation -->
+    {% block nav %}
+        {% include "layout/_navigation.njk" %}
+    {% endblock %}
+
+    <main>  
+        <!-- Hero Section -->
+        
+            <section class="container col-xl-10 col-xxl-8 px-4 py-5">
+                <div class="row align-items-center g-lg-5 py-5">
+                <div class="col-lg-7 text-center text-lg-start">
+                    <h1 class="display-5 fw-bold lh-sm mb-3">Lorem ipsum dolor consectetur</h1>
+                    <p class="col-lg-10 fs-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus illo possimus dolorem enim, eveniet maiores quo ratione perspiciatis totam eaque optio eligendi est fugit reiciendis dolor sapiente ab modi nihil?.</p>
+                </div>
+                <div class="col-md-10 mx-auto col-lg-5 ">
+                    <form class="p-4 p-md-5 border rounded-3 ">
+                    <div class="form-outline mb-3">
+                    <label for="outlineInput mb-3">Email</label>
+                        <input type="email" class="form-control" id="outlineInput" placeholder="123abc@example.com">
+                    </div>
+                    <label for="outlinePassword mb-3">Password</label>
+                    <div class="form-outline mb-3">
+                        <input type="password" class="form-control" id="outlinePassword" placeholder="Password">
+                        
+                    </div>
+                    <div class="checkbox mb-3">
+                        <label>
+                        <input type="checkbox" value="remember-me"> Remember me
+                        </label>
+                    </div>
+                    <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
+                    </form>
+                </div>
+                </div>
+            </section>
+
+        <!-- Features section -->
+        <section class="container px-4 py-5 border-top">
+            <div class="row g-4 py-5 row-cols-1 row-cols-lg-3 text-center">
+            <div class="feature col ">
+                <h2>Featured title</h2>
+                <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                <a href="#" class="icon-link">
+                Call to action
+                <svg class="bi" width="1em" height="1em"><use xlink:href="#chevron-right"></use></svg>
+                </a>
+            </div>
+            <div class="feature col">
+                <h2>Featured title</h2>
+                <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                <a href="#" class="icon-link">
+                Call to action
+                <svg class="bi" width="1em" height="1em"><use xlink:href="#chevron-right"></use></svg>
+                </a>
+            </div>
+            <div class="feature col">
+                <h2>Featured title</h2>
+                <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                <a href="#" class="icon-link">
+                Call to action
+                <svg class="bi" width="1em" height="1em"><use xlink:href="#chevron-right"></use></svg>
+                </a>
+            </div>
+            </div>
+        </section>
+
+        
+    </main>
+
+    <!-- Include footer section -->
+    {% block footer %}
+        {% include "layout/_footer.njk" %}
+    {% endblock %}
+
+{% endblock %}
+{% block js %}
+    {# Bloque de estilos especificos de éstá página #}
+   <script type="text/javascript" src="content/js/index.js"></script>
+{% endblock %}

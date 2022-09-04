@@ -1,0 +1,97 @@
+{# extending #}
+{% extends "layout/_default.njk" %}
+<!-- Main CSS file por ahora lo ponemos aca pero tenemos que hacer un condicional en el layout creo, 
+veamos, porque desarrollo también tiene que cargar los estilos de cada página fuera del layout-->
+
+{# import macros #}
+{% import "macros/_button.njk" as btn %}
+{% import "macros/_button-anchor.njk" as btnLink %}
+
+{# Bloque de estilos especificos de éstá página #}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="content/css/about.css">
+{% endblock %}
+
+<!-- endbuild -->
+{% block content %}
+
+    <!-- Include Navigation -->
+    {% block nav %}
+        {% include "layout/_navigation.njk" %}
+    {% endblock %}
+
+    <main>  
+        <!-- About Section -->
+        <div class="container col-lg-8 text-center px-4 py-5">
+            <div class="d-flex flex-column justify-content-center">
+                <h1 class="display-2 fw-bold"> Some title website</h1>
+                <p> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has</p>
+                <div class="d-md-flex justify-content-md-center gap-2 col-6 mx-auto">
+                <!-- Macro -->
+                {% block buttonSecondary %}
+                    {{ btn.simpleButton( 'btn-danger btn-lg', 'Warning LG') }}
+                {% endblock %}
+
+                <!-- Macro -->
+                {% block buttonAnchor %}
+                    {{ btnLink.simpleButtonLink( 'btn-info btn-lg', 'http://www.google.com', 'Link') }}
+                {% endblock %}  
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- Cards section -->
+        <div class="container px-4 py-5 border-top">
+        <div class="row row-cols-1 row-cols-md-3 g-4 text-center">
+  <div class="col">
+    <div class="card h-100">
+      <img src="https://images.unsplash.com/photo-1591382696684-38c427c7547a?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8aG9tZSUyMG9mZmljZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      </div>
+      
+    </div>
+  </div>
+  <div class="col">
+    <div class="card h-100">
+      <img src="https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8b2ZmaWNlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+      </div>
+      
+    </div>
+  </div>
+  <div class="col">
+    <div class="card h-100">
+      <img src="https://images.unsplash.com/photo-1454165205744-3b78555e5572?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDZ8fGNvZGluZ3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+            <!-- Help section -->
+        <div class=" help_container container col-lg-8 text-center p-4">
+                 <div class="d-flex flex-column justify-content-center">
+                        <h1> Need some help?</h1>
+                        <button type="button" class="btn_help btn btn-link ">We're here ready to talk</button>
+                    </div>
+                </div>
+            </main>
+
+    <!-- Include footer section -->
+    {% block footer %}
+        {% include "layout/_footer.njk" %}
+    {% endblock %}
+
+{% endblock %}
+{% block js %}
+    {# Bloque de estilos especificos de éstá página #}
+   <script type="text/javascript" src="content/js/index.js"></script>
+{% endblock %}

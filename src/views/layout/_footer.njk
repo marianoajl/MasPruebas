@@ -1,0 +1,29 @@
+<div class="container py-3 border-top">
+    <footer class="pt-4 my-md-5 pt-md-5">
+        <div class="row">
+        <div class="col-12 col-md">
+            <img class="mb-2" src="content/img/bootstrap-logo.svg" alt="" width="24" height="19">
+            <small class="d-block mb-3 text-muted">© 2017–2021</small>
+        </div>
+
+        {% for item in footerItems %}
+            {% for footer_links in item.footer_links %}
+            <div class="col-4 col-md">
+                <h5>{{ footer_links.item_title }}</h5>
+                <ul class="list-unstyled text-small">
+                    {% for page in footer_links.pages %}
+                        <li class="mb-1">
+                            <a class="link-secondary text-decoration-none" href="{{ page.item_link }}" title="{{page.item_name}}" >
+                                {{ page.item_name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        {% endfor %}
+        </div>
+    </footer>
+</div>    
+
+
