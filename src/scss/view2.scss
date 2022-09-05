@@ -1,7 +1,9 @@
+// body - reset 
+@use "base";
+// layout aside + content
+@use "layout/menu-content";
 
-@use "base/" as *;
-@use "layout/menu-content" as *;
-
-@use "layout/header" as *;
-@use "layout/aside-menu" as *;
-@use "pages/view2" as *;
+// @use "layout/header+menu+footer" as *;
+@use "layout/header";
+@use "layout/aside-menu";
+@use "pages/view2";
