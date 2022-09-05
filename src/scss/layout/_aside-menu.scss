@@ -2,5 +2,21 @@
 
 .aside-menu {
     grid-area: aside-menu;
+    padding: $main-padding 5px 10px 15px;
     background: $blue;
+
+    .menu-list {
+        padding: 0;
+        list-style: none;
+
+        .menu-list__item {
+            font-size: $fs-14;
+            color: $black;
+
+            .menu-list__link {
+                text-decoration: none;
+                color: inherit;
+            }
+        }
+    }
 }

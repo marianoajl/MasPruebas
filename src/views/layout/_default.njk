@@ -12,10 +12,18 @@
         {% endblock %}
     </head>
     <body>
-
+        <main class="structure">  
+            {% block asideMenu %}
+                {% include "layout/_aside-menu.njk" %}
+            {% endblock %}
         {# main content block #}
-        {% block content %}
-        
+            {% block content %}
+
+            {% endblock %}
+        </main>
+
+        {% block content2 %}
+            {# Modales, toast, loaders #}
         {% endblock %}
 
         <script src="content/js/vendors/bootstrap-5.0.2/bootstrap.bundle.js"></script>

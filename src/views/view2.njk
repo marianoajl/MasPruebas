@@ -13,19 +13,16 @@ veamos, porque desarrollo también tiene que cargar los estilos de cada página 
 
 <!-- endbuild -->
 {% block content %}
-
-    <!-- Include Navigation -->
-
-    <main class="structure">  
-        {% block asideMenu %}
-            {% include "layout/_aside-menu.njk" %}
-        {% endblock %}
-        <section class="section">
-            
-        </section>
-    </main>
-
+    <!-- Contenido --> 
+    <section class="section d-flex flex-column align-items-center">
+        <h1 class="section__title">esto parece un título</h1>
+        <h3 class="section__subtitle">No se si hay más data</h3>
+    </section>
 {% endblock %}
+
+{% block content2 %}
+{% endblock %}
+
 {% block js %}
     {# Bloque de estilos especificos de éstá página #}
     <script type="text/javascript" src="content/js/view2.js"></script>
