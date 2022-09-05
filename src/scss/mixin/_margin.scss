@@ -1,5 +1,6 @@
 @use "variables" as *;
 
+// margin-bottom 16px;
 @mixin mg-b-16 {
     margin-bottom: $margin-bottom-16;
 }

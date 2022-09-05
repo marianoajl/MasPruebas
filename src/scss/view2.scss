@@ -1,11 +1,13 @@
 // body - reset 
 @use "base";
-// layout aside + content
-@use "layout/menu-content";
 
+// Layout
 // @use "layout/header+menu+footer" as *;
 @use "layout/header";
+@use "layout/menu-content";
 @use "layout/aside-menu";
+@use "layout/aside-section";
 @use "layout/footer";
 
+// Pages
 @use "pages/view2";
