@@ -1,9 +1,9 @@
 @use "variables" as *;
+@use "mixin" as *;
 
 .header {
+    @include max-width;
     position: fixed;
-    width: $width-100;
-    max-width: $max-width;
     height: $header-height;
     background: $red;
 }

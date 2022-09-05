@@ -1,3 +1,10 @@
-// -----------------------------------------------------------------------------
-// This file contains all styles related to the layout/footer of the site/application.
-// -----------------------------------------------------------------------------
+@use "variables" as *;
+@use "mixin" as *;
+
+.footer {
+    @include max-width;
+    height: $footer-height;
+    background: $green;
+}
+
+

@@ -1,0 +1,6 @@
+@use "variables" as *;
+
+@mixin max-width {
+    width: $width-100;
+    max-width: $max-width;
+}
