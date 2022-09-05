@@ -12,6 +12,12 @@
         {% endblock %}
     </head>
     <body>
+        {# hedaer #}
+        {% block header %}
+            {% include "layout/_header.njk" %}
+        {% endblock %}
+
+        {# content #}
         <main class="structure">  
             {% block asideMenu %}
                 {% include "layout/_aside-menu.njk" %}
@@ -22,6 +28,7 @@
             {% endblock %}
         </main>
 
+        {# Modales, toast, loaders #}
         {% block content2 %}
             {# Modales, toast, loaders #}
         {% endblock %}

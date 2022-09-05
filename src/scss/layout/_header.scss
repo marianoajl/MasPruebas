@@ -1,0 +1,9 @@
+@use "variables" as *;
+
+.header {
+    position: fixed;
+    width: $width-100;
+    max-width: $max-width;
+    height: $header-height;
+    background: $red;
+}

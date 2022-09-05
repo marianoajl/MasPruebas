@@ -1,7 +1,7 @@
 @use "variables" as *;
 
 .aside-menu {
-    grid-area: aside-menu;
+    grid-area: aside;
     padding: $main-padding 5px 10px 15px;
     background: $blue;
 
@@ -14,8 +14,14 @@
             color: $black;
 
             .menu-list__link {
+                padding: 3px;
                 text-decoration: none;
                 color: inherit;
+
+                &:hover {
+                    background: $green;
+                    border-radius: 8px;
+                }
             }
         }
     }

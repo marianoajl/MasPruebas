@@ -4,9 +4,16 @@
     width: $width-100;
     max-width: $max-width;
     min-height: $min-height;
-    // background-color: $red;
+    grid-template-columns: $wmin-aside-menu auto;
     display: grid;
-    grid-template-columns: $w-aside-menu auto;
-    column-gap: $column-gap;
-    grid-template-areas: "aside-menu content"
+    column-gap: $mn-column-gap;
+    grid-template-areas: "aside content"
+}
+
+@media (min-width: 750px) {
+
+    .structure {
+        grid-template-columns: $w-aside-menu auto;
+        column-gap: $mx-column-gap;
+    }
 }
