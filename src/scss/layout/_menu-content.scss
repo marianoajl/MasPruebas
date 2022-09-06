@@ -2,12 +2,12 @@
 @use "mixin" as *;
 
 .main {
-    @include max-width;
-    min-height: $min-height;
-    grid-template-columns: $wmin-aside-menu auto ;
     display: grid;
+    grid-template-columns: $wmin-aside-menu auto;
     column-gap: $mn-column-gap;
     grid-template-areas: "aside content";
+    @include max-width;
+    min-height: $min-height;
 }
 
 @media (min-width: 750px) {

@@ -1,0 +1,15 @@
+@use "variables" as *;
+@use "mixin" as *;
+
+.section__cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: $mx-column-gap;
+    row-gap: $mx-column-gap;
+    grid-template-areas: "1 2"
+                         "3 4";
+    @include max-width($max-main-width: $w-mx-section-cards);
+    border-radius: $bradius-8;
+
+
+}

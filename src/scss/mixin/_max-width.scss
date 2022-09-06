@@ -1,6 +1,11 @@
 @use "variables" as *;
 
-@mixin max-width {
+@mixin max-width ($max-main-width: $max-main-width) {
     width: $width-100;
-    max-width: $max-width;
+    max-width: $max-main-width;
+}
+
+@mixin max-width-cards {
+    width: $width-100;
+    max-width: $w-mx-section-cards;
 }

@@ -4,4 +4,17 @@
     grid-area: content;
     padding: $main-padding 10px 10px 10px;
     background: $yellow;
+
+    .section__title {
+
+        font-size: $fs-40;
+        font-weight: $fw-600;
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    .section__subtitle {
+        text-align: center;
+        font-size: $fs-24;
+    }
 }
