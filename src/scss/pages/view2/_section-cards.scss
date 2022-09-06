@@ -3,13 +3,36 @@
 
 .section__cards {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: $mx-column-gap;
-    row-gap: $mx-column-gap;
-    grid-template-areas: "1 2"
-                         "3 4";
-    @include max-width($max-main-width: $w-mx-section-cards);
+    grid-template-columns: 1fr;
+    row-gap: $mn-column-gap;
+    grid-template-areas: "1" "2" "3" "4";
+    @include max-width($max-main-width: $w-section);
     border-radius: $bradius-8;
 
+    .card__content {
+        position: relative;
+        width: $width-100;
+        border-radius: $bradius-8;
 
+        .card__link {
+            position: absolute;
+            width: $width-100;
+            height: $height-100;
+            border-radius: $bradius-8;
+        }
+    }
+}
+
+@media (min-width: 800px) {
+
+    .section__cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: $mx-column-gap;
+        row-gap: $mx-column-gap;
+        grid-template-areas: "1 2"
+                             "3 4";
+        @include max-width($max-main-width: $w-mx-section-cards);
+        border-radius: $bradius-8;
+    }
 }

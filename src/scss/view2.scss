@@ -2,7 +2,7 @@
 @use "base";
 
 // Layout
-// @use "layout/header+menu+footer" as *;
+// @use "layout/header+menu+footer";
 @use "layout/header";
 @use "layout/menu-content";
 @use "layout/aside-menu";
