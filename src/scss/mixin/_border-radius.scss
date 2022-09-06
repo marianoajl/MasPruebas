@@ -1,0 +1,6 @@
+@use "variables" as *;
+
+// border-radius 8px;
+@mixin border-radius-8 {
+    border-radius: $bradius-8;
+}
