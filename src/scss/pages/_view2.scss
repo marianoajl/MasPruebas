@@ -1,4 +1,5 @@
 @use "variables" as *;
+@use "mixin" as *;
 
 .section {
     grid-area: content;
@@ -16,5 +17,6 @@
     .section__subtitle {
         text-align: center;
         font-size: $fs-24;
+        @include mg-b-16;
     }
 }

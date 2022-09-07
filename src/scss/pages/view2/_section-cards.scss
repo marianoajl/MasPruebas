@@ -2,18 +2,19 @@
 @use "mixin" as *;
 
 .section__cards {
+
     display: grid;
     grid-template-columns: 1fr;
-    row-gap: $mn-column-gap;
-    grid-template-areas: "1" "2" "3" "4";
-    @include max-width($max-main-width: $w-section);
-    // border-radius: $bradius-8;
+    row-gap: $mx-column-gap;
+    @include max-width($max-main-width: $width-100);
     @include border-radius-8;
 
     .card__content {
         position: relative;
         width: $width-100;
+        padding: $padding-cards;
         @include border-radius-8;
+        border: 1px solid $black;
 
         .card__link {
             position: absolute;
