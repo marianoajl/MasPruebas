@@ -4,7 +4,7 @@
 .section__cards {
 
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: auto;
     row-gap: $mx-column-gap;
     @include max-width($max-main-width: $width-100);
     @include border-radius-8;
