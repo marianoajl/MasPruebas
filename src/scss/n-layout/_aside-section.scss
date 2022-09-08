@@ -1,0 +1,13 @@
+.aside-section {
+    display: none;
+    grid-area: section;
+    background: var(--other-blue);
+}
+
+@media (min-width: 750px) {
+    
+    .aside-section {
+        display: block;
+    }
+    
+}

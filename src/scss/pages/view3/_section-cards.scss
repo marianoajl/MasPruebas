@@ -1,0 +1,41 @@
+@use "n-mixin" as *;
+
+.section__cards {
+
+    display: grid;
+    grid-template-columns: auto;
+    row-gap: var(--mx-column-gap);
+    @include max-width-cards;
+    @include border-radius-8;
+
+    .card__content {
+        position: relative;
+        width: var(--width-100);
+        padding: var(--padding-cards);
+        @include border-radius-8;
+        border: 1px solid var(--black);
+
+        .card__link {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: var(--width-100);
+            height: var(--height-100);
+            @include border-radius-8;
+        }
+    }
+}
+
+@media (min-width: 800px) {
+
+    .section__cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: var(--mx-column-gap);
+        row-gap: var(--mx-column-gap);
+        grid-template-areas: "1 2"
+                             "3 4";
+        @include max-width-cards;
+        border-radius: var(--bradius-8);
+    }
+}

@@ -1,0 +1,9 @@
+@use "n-mixin" as *;
+
+.footer {
+    @include max-width;
+    height: var(--footer-height);
+    background: var(--green);
+}
+
+

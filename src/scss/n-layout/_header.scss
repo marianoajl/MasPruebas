@@ -1,0 +1,9 @@
+@use "n-mixin" as *;
+
+.header {
+    @include max-width;
+    position: fixed;
+    height: var(--header-height);
+    background: var(--red);
+    z-index: 100;
+}

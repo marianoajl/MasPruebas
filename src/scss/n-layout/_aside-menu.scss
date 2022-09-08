@@ -1,9 +1,9 @@
-@use "mixin" as *;
+@use "n-mixin" as *;
 
 .aside-menu {
     grid-area: aside;
-    padding: $main-padding 10px 10px 10px;
-    background: $blue;
+    padding: var(--main-padding) 10px 10px 10px;
+    background: var(--blue);
 
     .menu-list {
         padding: 0;
@@ -11,8 +11,8 @@
 
         .menu-list__item {
             @include mg-b-16;
-            font-size: $fs-14;
-            color: $black;
+            font-size: var(--fs-14);
+            color: var(--black);
 
             .menu-list__link {
                 padding: 3px;
@@ -20,7 +20,7 @@
                 color: inherit;
 
                 &:hover {
-                    background: $green;
+                    background: var(--green);
                     border-radius: 8px;
                 }
             }

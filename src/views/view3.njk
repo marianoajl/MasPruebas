@@ -1,0 +1,28 @@
+{# extending #}
+{% extends "layout/_default.njk" %}
+<!-- Main CSS file por ahora lo ponemos aca pero tenemos que hacer un condicional en el layout creo, 
+veamos, porque desarrollo también tiene que cargar los estilos de cada página fuera del layout-->
+
+{# import macros #}
+{% import "macros/_button.njk" as btn %}
+
+{# Bloque de estilos especificos de éstá página #}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="content/css/view3.css">
+{% endblock %}
+
+{% block content %}
+    <section class="section">
+        <h1 class="section__title">esto parece un título</h1>
+        <h3 class="section__subtitle">No se si hay más data</h3>
+        {% include "partials/view2/_section-cards.njk" %}
+    </section>
+{% endblock %}
+
+{% block content2 %}
+{% endblock %}
+
+{% block js %}
+    {# Bloque de estilos especificos de éstá página #}
+    <script type="text/javascript" src="content/js/view2.js"></script>
+{% endblock %}
