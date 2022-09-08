@@ -18,6 +18,8 @@
 
         .card__link {
             position: absolute;
+            top: 0;
+            left: 0;
             width: $width-100;
             height: $height-100;
             @include border-radius-8;

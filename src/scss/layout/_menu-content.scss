@@ -3,7 +3,7 @@
 
 .main {
     display: grid;
-    grid-template-columns: $wmin-aside-menu auto;
+    grid-template-columns: $wmin-aside-menu 1fr;
     column-gap: $mn-column-gap;
     grid-template-areas: "aside content";
     @include max-width;
