@@ -24,6 +24,10 @@
             height: var(--height-100);
             @include border-radius-8;
         }
+
+        .card__title {
+            text-transform: uppercase;
+        }
     }
 }
 
