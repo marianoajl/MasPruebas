@@ -2,8 +2,9 @@
 @use "mixin" as *;
 
 .footer {
+    grid-area: footer;
     @include max-width;
-    height: $footer-height;
+    // height: $footer-height;
     background: $green;
 }
 

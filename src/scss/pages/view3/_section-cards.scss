@@ -11,7 +11,10 @@
 
     .card__content {
         position: relative;
+        display: grid;
+        gap: var(--mx-row-gap) 0;
         width: var(--width-100);
+        margin: 0;
         padding: var(--padding-cards);
         @include border-radius-8;
         border: 1px solid var(--black);
@@ -23,11 +26,48 @@
             width: var(--width-100);
             height: var(--height-100);
             @include border-radius-8;
+
+            &:hover {
+                border: 2px solid var(--black);
+            }
         }
 
         .card__title {
+            margin: inherit;
+            font-size: var(--fs-24);
+            font-weight: var(--fw-600);
             text-transform: uppercase;
         }
+
+        .card__subtitle {
+            margin: inherit;
+            font-size: var(--fs-20);
+            font-weight: var(--fw-600);
+            text-transform: capitalize;
+        }
+
+        .card__text {
+            margin: inherit;
+        }
+
+        .card__arrow {
+            // display: flex;
+            justify-self: end;
+            width: 10px;
+            height: 10px;
+            margin: inherit;
+            background: var(--black);
+            border-radius: var(--bradius-50);
+
+            // .arrow {
+            //     align-self: flex-end;
+            //     width: 10px;
+            //     height: 10px;
+            //     background: var(--black);
+            //     border-radius: var(--bradius-50);
+            // }
+        }
+
     }
 }
 

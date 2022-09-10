@@ -2,8 +2,9 @@
 @use "n-mixin" as *;
 
 .footer {
+    grid-area: footer;
     @include max-width;
-    height: var(--footer-height);
+    // height: var(--footer-height);
     background: var(--green);
 }
 
