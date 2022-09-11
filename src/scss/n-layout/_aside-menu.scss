@@ -10,7 +10,7 @@
     // align-items: center;
     width: var(--wmin-aside-menu);
     height: var(--height-100);
-    padding: var(--main-padding) 10px 10px 10px;
+    padding: var(--main-padding) 15px 10px 15px;
     background: var(--blue);
     overflow-y: auto;
 
@@ -47,7 +47,7 @@
 
         &:hover {
             font-weight: var(--fw-600);
-            //              
+            outline: 1px solid var(--green);
         } 
     }
 }

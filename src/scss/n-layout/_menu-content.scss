@@ -15,7 +15,7 @@
 
     .main {
         grid-template-columns: var(--w-aside-menu) auto var(--w-section);
-        column-gap: var(--mx-column-gap);
+        column-gap: var(--mn-column-gap);
         grid-template-areas: "aside content section"
                              "aside  footer section";
     }
