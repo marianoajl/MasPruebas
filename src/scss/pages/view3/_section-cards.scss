@@ -2,11 +2,11 @@
 @use "n-mixin" as *;
 
 .section__cards {
-
     display: grid;
     grid-template-columns: auto;
     row-gap: var(--mx-column-gap);
     @include max-width-cards;
+    margin: 0 0 var(--mx-column-gap) 0;
     @include border-radius-8;
 
     .card__content {

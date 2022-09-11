@@ -10,9 +10,11 @@
     // align-items: center;
     width: var(--wmin-aside-menu);
     height: var(--height-100);
-    padding: var(--main-padding) 15px 10px 15px;
+    padding: var(--main-padding) 5px 10px 5px;
     background: var(--blue);
+    overflow-x: none;
     overflow-y: auto;
+
 
     .menu-list {
         padding: 0;
@@ -20,10 +22,10 @@
 
         .menu-list__item {
             @include mg-b-16;
-            color: var(--black);
+            color: var(--white);
             font-size: var(--fs-14);
             font-weight: var(--fw-500);
-            text-transform: capitalize;
+            text-transform: uppercase;
 
             .menu-list__link {
                 padding: 3px;
@@ -31,7 +33,7 @@
                 color: inherit;
 
                 &:hover {
-                    background: var(--green);
+                    background: var(--red);
                     border-radius: 8px;
                 }
             }
@@ -56,6 +58,6 @@
 
     .aside-menu {
         width: var(--w-aside-menu);
+        padding: var(--main-padding) 15px 10px 15px;
     }
-
 }

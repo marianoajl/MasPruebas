@@ -2,9 +2,26 @@
 @use "n-mixin" as *;
 
 .header {
-    @include max-width;
     position: fixed;
+    display: flex;
+    align-items: center;
+    @include max-width;
+    padding: 0 0 0 5px;
     height: var(--header-height);
     background: var(--red);
     z-index: 100;
+
+    .header__logo {
+        font-size: var(--fs-40);
+        color: var(--yellow);
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+}
+
+@media (min-width: 750px) {
+
+    .header {
+        padding: 0 0 0 15px;
+    }
 }
