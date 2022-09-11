@@ -4,7 +4,7 @@
 .main {
     display: grid;
     grid-template-columns: var(--wmin-aside-menu) auto;
-    grid-template-rows: minmax(var(--min-height), auto) var(--footer-height); // si le pongo "auto" se ajusta al height del contenido? Así es - confirmado
+    grid-template-rows: minmax(var(--min-height) auto) var(--footer-height); // si le pongo "auto" se ajusta al height del contenido? Así es - confirmado
     column-gap: var(--mn-column-gap);
     grid-template-areas: "aside content"
                          "aside  footer";
