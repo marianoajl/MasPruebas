@@ -44,6 +44,8 @@ const fs = require('fs');
 const htmlbeautify = require('gulp-html-beautify');
 // Prettier CSS Files.
 const prettier = require("gulp-prettier");
+// Limpia el CSS Flies.
+const cleanCSS = require("gulp-clean-css");
 
 /* VARS
  * --------------------------------------------------
@@ -114,22 +116,23 @@ function styles() {
    };
 
    return (
-      gulp
-         .src(config.styles.input, { since: gulp.lastRun(styles) })
-         .pipe(dependents()) // find sass files to re-compile
-         .pipe(sourcemaps.init())
-         .pipe(
-            sass({ includePaths: ["./node_modules"] }).on(
-               "error",
-               sass.logError
-            )
-         )
-         .pipe(postcss([autoprefixer()]))
-         .pipe(sourcemaps.write({ addComment: false }))
-         .pipe(prettier(optionsPrettier)) // Aplica Prettier sobre los CSS
-         // .pipe(sass({ outputStyle: "compressed" }).on("error", sass.logError)) // Minifica el CSS.
-         .pipe(gulp.dest(config.styles.output))
-         .pipe(browserSync.stream())
+       gulp
+           .src(config.styles.input, { since: gulp.lastRun(styles) })
+           .pipe(dependents()) // find sass files to re-compile
+           .pipe(sourcemaps.init())
+           .pipe(
+               sass({ includePaths: ["./node_modules"] }).on(
+                   "error",
+                   sass.logError
+               )
+           )
+           .pipe(postcss([autoprefixer()]))
+           .pipe(sourcemaps.write({ addComment: false }))
+           .pipe(cleanCSS({ level: 2 })) // Minifica el código. Si lo pongo debajo de Prettier lo deja minificado + eleimina comentarios.
+           .pipe(prettier(optionsPrettier)) // Aplica Prettier sobre los CSS
+         //   .pipe(sass({ outputStyle: "compressed" }).on("error", sass.logError)) // Minifica el CSS.
+           .pipe(gulp.dest(config.styles.output))
+           .pipe(browserSync.stream())
    );
 }
 

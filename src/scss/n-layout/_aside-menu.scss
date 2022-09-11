@@ -21,6 +21,8 @@
         list-style: none;
 
         .menu-list__item {
+            display: flex;
+            align-items: center;
             @include mg-b-16;
             color: var(--white);
             font-size: var(--fs-14);
