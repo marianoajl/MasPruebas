@@ -116,23 +116,23 @@ function styles() {
    };
 
    return (
-       gulp
-           .src(config.styles.input, { since: gulp.lastRun(styles) })
-           .pipe(dependents()) // find sass files to re-compile
-           .pipe(sourcemaps.init())
-           .pipe(
-               sass({ includePaths: ["./node_modules"] }).on(
-                   "error",
-                   sass.logError
-               )
-           )
-           .pipe(postcss([autoprefixer()]))
-           .pipe(sourcemaps.write({ addComment: false }))
-           .pipe(cleanCSS({ level: 2 })) // Minifica el código. Si lo pongo debajo de Prettier lo deja minificado + eleimina comentarios.
-           .pipe(prettier(optionsPrettier)) // Aplica Prettier sobre los CSS
-         //   .pipe(sass({ outputStyle: "compressed" }).on("error", sass.logError)) // Minifica el CSS.
-           .pipe(gulp.dest(config.styles.output))
-           .pipe(browserSync.stream())
+      gulp
+         .src(config.styles.input, { since: gulp.lastRun(styles) })
+         .pipe(dependents()) // find sass files to re-compile
+         .pipe(sourcemaps.init())
+         .pipe(
+            sass({ includePaths: ["./node_modules"] }).on(
+               "error",
+               sass.logError
+            )
+         )
+         .pipe(postcss([autoprefixer()]))
+         .pipe(sourcemaps.write({ addComment: false }))
+         .pipe(cleanCSS({ level: 2 })) // Minifica el código. Si lo pongo debajo de Prettier lo deja minificado + eleimina comentarios.
+         .pipe(prettier(optionsPrettier)) // Aplica Prettier sobre los CSS
+        //   .pipe(sass({ outputStyle: "compressed" }).on("error", sass.logError)) // Minifica el CSS.
+         .pipe(gulp.dest(config.styles.output))
+         .pipe(browserSync.stream())
    );
 }
 
@@ -209,8 +209,9 @@ function fileSize() {
 
 function views() {
    let optionsBeautify = {
-      indent_size: 4,
-      preserve_newlines: false,
+       indent_size: 4,
+       indent_level: 0,
+       preserve_newlines: false,
    };
    return gulp
       .src(config.html.pages, { base: "src/views" })
@@ -221,7 +222,6 @@ function views() {
                return JSON.parse(fs.readFileSync(config.html.data));
             })
       )
-
       .pipe(
             nunjucksRender({
                path: ["src/views"],

@@ -3,12 +3,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    outline: 1px solid black;
+    // outline: 1px solid black;
 
     &:focus {
         border-radius: var(--bradius-8);        
         outline: 2px solid var(--black) !important;
-        z-index: 1000;
+        // z-index: 1000;
     }
 
     &::-webkit-scrollbar {
@@ -22,6 +22,10 @@
     &::-webkit-scrollbar-thumb {
         background: var(--green);
         border-radius: var(--bradius-8);
+
+        &:hover {
+            background: var(--black);
+        }
     }
 }
 
