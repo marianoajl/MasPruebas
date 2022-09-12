@@ -1,0 +1,9 @@
+@mixin max-width {
+    width: var(--width-100);
+    max-width: var(--max-main-width);
+}
+
+@mixin max-width-cards {
+    width: var(--width-100);
+    max-width: var(--w-mx-section-cards);
+}

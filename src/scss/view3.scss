@@ -1,0 +1,13 @@
+@use "variables-nativas"; // variables
+@use "base"; // body - reset 
+
+// Layout
+@use "n-layout/header";
+@use "n-layout/menu-content";
+@use "n-layout/aside-menu";
+@use "n-layout/aside-section";
+@use "n-layout/footer";
+
+// Pages
+@use "pages/view3";
+@use "pages/view3/section-cards";

@@ -1,0 +1,22 @@
+/* --- M A I N - C O N T E N T --- */
+@use "n-mixin" as *;
+
+.main {
+    display: grid;
+    grid-template-columns: var(--wmin-aside-menu) auto;
+    grid-template-rows: minmax(var(--min-height), auto) var(--footer-height); // si le pongo "auto" se ajusta al height del contenido? Así es - confirmado
+    column-gap: var(--mn-column-gap);
+    grid-template-areas: "aside content"
+                         "aside  footer";
+    @include max-width;
+}
+
+@media (min-width: 750px) {
+
+    .main {
+        grid-template-columns: var(--w-aside-menu) auto var(--w-section);
+        column-gap: var(--mn-column-gap);
+        grid-template-areas: "aside content section"
+                             "aside  footer section";
+    }
+}

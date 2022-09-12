@@ -1,8 +1,18 @@
-{% macro cardView (card__content, card__link, card__title, card__subtitle, card__text) %}
+{% macro cardView (card__content, card__link, card__title, card__subtitle, card__text, card__arrow, arrow) %}
     <article class="{{ card__content }}">
+<<<<<<< HEAD
         <a href="view2.html" class="{{ card__link }}"></a>
         <h6 class="{{ card__title }}">Hola</h6>
         <p class="{{ card__subtitle }}">parráfo</p>
         <p class="{{ card__text }}">segundo párrafo</p>
+=======
+        <a href="#" class="{{ card__link }}"></a>
+        <h6 class="{{ card__title }}">título</h6>
+        <p class="{{ card__subtitle }}">subtítulo</p>
+        <p class="{{ card__text }}">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veniam saepe est esse distinctio modi sed quia aperiam eum, libero ullam?</p>
+        <p class="{{ card__arrow }}">
+            {# <span class="{{ arrow }}"></span> #}
+        </p>
+>>>>>>> variables-nativas
     </article>
 {% endmacro %}

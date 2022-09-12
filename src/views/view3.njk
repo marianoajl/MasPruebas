@@ -9,13 +9,14 @@ veamos, porque desarrollo también tiene que cargar los estilos de cada página 
 
 {# Bloque de estilos especificos de éstá página #}
 {% block css %}
-    <link rel="stylesheet" type="text/css" href="content/css/view2.css">
+    <link rel="stylesheet" type="text/css" href="content/css/view3.css">
 {% endblock %}
 
 {% block content %}
     <section class="section">
-        <h1 class="section__title">esto parece un título</h1>
-        <h3 class="section__subtitle">No se si hay más data</h3>
+        <h1 class="section__title">un título</h1>
+        <h3 class="section__subtitle">un subtítulo</h3>
+        {% include "partials/view2/_section-cards.njk" %}
         {% include "partials/view2/_section-cards.njk" %}
     </section>
 {% endblock %}

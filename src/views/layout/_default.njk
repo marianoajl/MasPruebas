@@ -12,27 +12,35 @@
         {% endblock %}
     </head>
     <body>
-        {# hedaer #}
+        {# -- H E A D E R -- #}
         {% block header %}
             {% include "layout/_header.njk" %}
         {% endblock %}
 
         {# content #}
-        <main class="main">  
+        <main class="main">
+            {# -- A S I D E - M E N U -- #}  
             {% block asideMenu %}
                 {% include "layout/_aside-menu.njk" %}
             {% endblock %}
 
+            {# -- C O N T E N T -- #}
             {% block content %}
                 {# main content block #}
             {% endblock %}
 
+            {# -- A S I D E - S E C T I O N -- #}
             {% block asideSection %}
                 {% include "layout/_aside-section.njk" %}
             {% endblock %}
+
+            {# -- F O O T E R -- #}
+            {% block footer%}
+                {% include "layout/_footer-n.njk" %}
+            {% endblock %}
         </main>
 
-        <footer class="footer"></footer>
+        {# <footer class="footer"></footer> #}
 
         {% block content2 %}
             {# Modales, toast, loaders #}

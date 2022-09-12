@@ -1,0 +1,87 @@
+/* --- S E C T I O N - C A R D S --- */
+@use "n-mixin" as *;
+
+.section__cards {
+    display: grid;
+    grid-template-columns: auto;
+    row-gap: var(--mx-column-gap);
+    @include max-width-cards;
+    margin: 0 0 var(--mx-column-gap) 0;
+    @include border-radius-8;
+
+    .card__content {
+        position: relative;
+        display: grid;
+        gap: var(--mx-row-gap) 0;
+        width: var(--width-100);
+        margin: 0;
+        padding: var(--padding-cards);
+        @include border-radius-8;
+        border: 1px solid var(--black);
+
+        .card__link {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: var(--width-100);
+            height: var(--height-100);
+            @include border-radius-8;
+
+            &:hover {
+                border: 2px solid var(--black);
+            }
+        }
+
+        .card__title {
+            margin: inherit;
+            font-size: var(--fs-24);
+            font-weight: var(--fw-600);
+            text-transform: uppercase;
+        }
+
+        .card__subtitle {
+            margin: inherit;
+            font-size: var(--fs-20);
+            font-weight: var(--fw-600);
+            text-transform: capitalize;
+        }
+
+        .card__text {
+            font-size: var(--fs-12);
+            margin: inherit;
+        }
+
+        .card__arrow {
+            // display: flex;
+            justify-self: end;
+            width: 10px;
+            height: 10px;
+            margin: inherit;
+            background: var(--black);
+            border-radius: var(--bradius-50);
+
+            // .arrow {
+            //     align-self: flex-end;
+            //     width: 10px;
+            //     height: 10px;
+            //     background: var(--black);
+            //     border-radius: var(--bradius-50);
+            // }
+        }
+
+    }
+}
+
+@media (min-width: 800px) {
+
+    .section__cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: var(--mx-column-gap);
+        row-gap: var(--mx-column-gap);
+        grid-template-areas: "1 2"
+                             "3 4";
+        @include max-width-cards;
+        border-radius: var(--bradius-8);
+    }
+}

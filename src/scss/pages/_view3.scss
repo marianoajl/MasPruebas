@@ -1,0 +1,18 @@
+@use "n-mixin" as *;
+
+.section {
+    grid-area: content;
+    padding: var(--main-padding) 10px var(--main-padding) 10px;
+    background: var(--yellow);
+
+    .section__title {
+        font-size: var(--fs-40);
+        font-weight: var(--fw-600);
+        text-transform: uppercase;
+    }
+
+    .section__subtitle {
+        font-size: var(--fs-24);
+        @include mg-b-16;
+    }
+}
