@@ -52,23 +52,13 @@
         }
 
         .card__arrow {
-            // display: flex;
             justify-self: end;
             width: 10px;
             height: 10px;
             margin: inherit;
             background: var(--black);
             border-radius: var(--bradius-50);
-
-            // .arrow {
-            //     align-self: flex-end;
-            //     width: 10px;
-            //     height: 10px;
-            //     background: var(--black);
-            //     border-radius: var(--bradius-50);
-            // }
         }
-
     }
 }
 
