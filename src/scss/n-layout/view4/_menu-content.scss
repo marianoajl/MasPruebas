@@ -1,0 +1,19 @@
+/* --- M A I N - C O N T E N T --- */
+@use "n-mixin" as *;
+
+.main {
+    display: grid;
+    grid-template-columns: repeat(2, var(--mx-column)) repeat(8, 1fr);
+    column-gap: var(--mx-column-gap-21);
+    @include max-width;
+}
+
+// @media (min-width: 750px) {
+
+//     .main {
+//         grid-template-columns: var(--w-aside-menu) auto var(--w-section);
+//         column-gap: var(--mn-column-gap);
+//         grid-template-areas: "aside content section"
+//                              "aside  footer section";
+//     }
+// }

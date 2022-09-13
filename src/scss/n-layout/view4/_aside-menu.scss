@@ -1,0 +1,53 @@
+@use "n-mixin" as *;
+
+.aside-menu {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: var(--w-aside-menu);
+    height: var(--height-100);
+    padding: var(--main-padding) 15px 10px 15px;
+    background: var(--blue);
+    overflow-y: auto;
+
+
+    .menu-list {
+        padding: 0;
+        list-style: none;
+
+        .menu-list__item {
+            display: flex;
+            align-items: center;
+            @include mg-b-16;
+            color: var(--white);
+            font-size: var(--fs-14);
+            font-weight: var(--fw-500);
+            text-transform: uppercase;
+
+            .menu-list__link {
+                // padding: 0 0 0 5px ;
+                text-decoration: none;
+                color: inherit;
+
+                &:hover {
+                    background: var(--red);
+                    border-radius: 8px;
+                }
+            }
+        }
+    }
+
+    .aside-menu__button {
+        width: var(--width-100);
+        height: var(--button-height);
+        color: var(--green);
+        border: 1px solid var(--green);
+        text-transform: uppercase;
+
+        &:hover {
+            font-weight: var(--fw-600);
+            outline: 1px solid var(--green);
+        } 
+    }
+}

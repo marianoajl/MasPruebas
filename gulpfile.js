@@ -243,7 +243,7 @@ function dev() {
    browserSync.init({
       server: {
          baseDir: "./dist",
-         index: "/view3.html",
+         index: "/view4.html",
       },
    });
    gulp.watch("src/scss/**/*.scss", styles);
