@@ -3,9 +3,12 @@
 
 .main {
     display: grid;
-    grid-template-columns: repeat(2, var(--mx-column)) repeat(8, 1fr);
+    grid-template-columns: var(--w-aside-menu) 1fr;
+    grid-template-rows: minmax(var(--min-height), auto) var(--footer-height);
     column-gap: var(--mx-column-gap-21);
     @include max-width;
+    grid-template-areas: "menu content"
+                         "menu  footer";
 }
 
 // @media (min-width: 750px) {

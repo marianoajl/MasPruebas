@@ -1,9 +1,91 @@
 @use "n-mixin" as *;
 
+@mixin card__content {
+    width: var(--width-100);
+    height: var(--card-height);
+    margin: 0 0 var(--card-row-gap) 0;
+    border: 1px solid var(--blue);
+    border-radius: var(--bradius-10);
+}
+
 .section {
-    // grid-area: content;
-    // padding: var(--main-padding) 10px var(--main-padding) 10px;
-    grid-column: 3 /11;
-    min-height: var(--min-height);
+    grid-area: content;
+    @include grid-content;
+    // min-height: var(--min-height);
+    padding: var(--main-padding) 0 0 0;
     background: var(--yellow);
+
+    .head__title {
+        grid-row: 1;
+        grid-column: 1 / 7;
+        min-height: var(--height-title);
+        // margin: 0 0 var(--margin-bottom-28) 0;
+    }
+
+    .card__content {
+        grid-area: auto / 1 / auto / 7;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--card-row-gap) var(--mx-column-gap-21);
+        min-height: var(--card-container-height);
+        margin: 0 0 var(--margin-bottom-96) 0;
+        
+        .card {
+            position: relative;
+            display: flex;
+            min-height: var(--card-height);
+            padding: var(--padding-cards-top) var(--padding-card-x) var(--padding-card-x) var(--padding-card-x);
+            border: 1px solid var(--blue);
+            border-radius: var(--bradius-10);
+
+            .card__link {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: var(--width-100);
+                height: var(--height-100);
+                margin: 0;
+                border-radius: var(--bradius-10);
+            }
+
+            .card__title {
+                margin: 0 0 var(--margin-bottom-16) 0;
+                line-height: var(--line-height-17);
+                font-size: var(--fs-16);
+                font-weight: var(--fw-600);
+                color: var(--red);
+            }
+
+            .card__paragraph {
+                min-height: var(--min-height-paragraph);
+                margin: 0 0 var(--margin-bottom-16) 0;
+                line-height: var(--line-height-17);
+                font-size: var(--fs-14);
+                font-weight: var(--fw-500);
+                color: var(--grey);
+            }
+
+            .card__text {
+                margin: 0;
+                line-height: var(--line-height-15);
+                font-size: var(--fs-12);
+                color: var(--black-50);
+            }
+
+            .card__arrow {
+                align-self: flex-end;
+                width: var(--w-arrow);
+                height: var(--w-arrow);
+                border-radius: var(--bradius-50);
+                background: var(--black);
+            }
+        }
+    }
+
+    .tips__title {
+        grid-area: auto / 1 / auto / 7;
+        font-size: var(--fs-20);
+        font-weight: var(--fw-500);
+        color: var(--black-grey);
+    }
 }
