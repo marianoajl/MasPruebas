@@ -3,11 +3,7 @@
 @mixin grid-content {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    // grid-template-rows: auto minmax(var(--card-height), auto) minmax(var(--card-height), auto);
-    // grid-template-rows: auto;
-    grid-auto-rows: minmax((var(--height-title)), auto);
     column-gap: var(--mx-column-gap-21);
-    // grid-template-areas: "a b c d e f g h"
-                        //  "a b c d e f g h";
-                         
+    // grid-template-rows: auto minmax(var(--card-height), auto) minmax(var(--card-height), auto);
+    grid-template-rows: minmax(10px, auto);
 }
