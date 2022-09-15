@@ -13,11 +13,9 @@
     z-index: 100;
 
     .header__logo {
-        font-size: var(--fs-40);
-        color: var(--yellow);
-        line-height: var(--logo-line-height);
-        text-decoration: none;
-        text-transform: uppercase;
+        fill: var(--white);
+        width: var(--w-header-logo);
+        height: var(--h-header-logo);
 
         &:hover {
             font-weight: var(--fw-600);

@@ -1,4 +1,6 @@
+{% import "../macros/_icon-link.njk" as icon %}
+
 <header class="header">
-    <a href="#" class="header__logo">logo</a>
+    {{ icon.acLogoLink("#", "header__logo", "#ac-logo")}}
     {{ btnLink.simpleButtonLink("header__sign-in-btn", "#", "registrate")}}
 </header>

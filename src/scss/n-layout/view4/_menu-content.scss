@@ -2,21 +2,22 @@
 @use "n-mixin" as *;
 
 .main {
-    display: grid;
-    grid-template-columns: var(--w-aside-menu) 1fr;
-    grid-template-rows: minmax(var(--min-height), auto) var(--footer-height);
-    column-gap: var(--mx-column-gap-21);
     @include max-width;
-    grid-template-areas: "menu content"
-                         "menu  footer";
+    min-height: var(--min-height);
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(var(--min-height), auto);
+    grid-template-areas: "content";
 }
 
-// @media (min-width: 750px) {
+@media (min-width: 750px) {
 
-//     .main {
-//         grid-template-columns: var(--w-aside-menu) auto var(--w-section);
-//         column-gap: var(--mn-column-gap);
-//         grid-template-areas: "aside content section"
-//                              "aside  footer section";
-//     }
-// }
+    .main {
+    display: grid;
+    grid-template-columns: var(--w-aside-menu) 1fr;
+    //grid-template-rows: minmax(var(--min-height), auto); //var(--footer-height);
+    column-gap: var(--mx-column-gap-21);
+    @include max-width;
+    grid-template-areas: "menu content";
+                      //   "menu  footer";
+    }
+}

@@ -7,3 +7,9 @@
     // grid-template-rows: auto minmax(var(--card-height), auto) minmax(var(--card-height), auto);
     grid-template-rows: minmax(10px, auto);
 }
+
+@mixin grid-content-750 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: var(--mx-column-gap-21);
+}

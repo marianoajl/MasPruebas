@@ -1,0 +1,7 @@
+{% macro acLogoLink (link, class_icon, xlinkHref) %}
+<a href="{{ link }}">
+    <svg class="{{ class_icon }}">
+        <use xlink:href="{{ xlinkHref }}"></use>
+    </svg>
+</a>
+{% endmacro %}

@@ -12,6 +12,11 @@
         {% endblock %}
     </head>
     <body>
+        {# -- I C O N S -- #}
+        {% block icons %}
+            {% include "components/_icons.njk" %}
+        {% endblock %}
+        
         {# -- H E A D E R -- #}
         {% block header %}
             {% include "layout/_header.njk" %}
@@ -30,12 +35,10 @@
             {% endblock %}
 
             {# -- F O O T E R -- #}
-            {% block footer%}
+            {# {% block footer%}
                 {% include "layout/_footer-n.njk" %}
-            {% endblock %}
+            {% endblock %} #}
         </main>
-
-        {# <footer class="footer"></footer> #}
 
         {% block content2 %}
             {# Modales, toast, loaders #}
