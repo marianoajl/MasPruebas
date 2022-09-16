@@ -3,10 +3,17 @@
 //
 
 .btn {
-  display: inline-block;
+  // display: inline-block;
+  display: flex; //custom
+  justify-content: center; //custom
+  align-items: center; //custom
   font-family: $btn-font-family;
-  font-weight: $btn-font-weight;
-  line-height: $btn-line-height;
+  max-width: var(--w-button); //custom 
+  width: 100%; //custom
+  height: var(--h-button); //custom
+  font-weight: var(--fw-600); //$btn-font-weight; custom
+  line-height: var(--fs-12); //$btn-line-height; custom
+  text-transform: uppercase; //custom
   color: $body-color;
   text-align: center;
   text-decoration: if($link-decoration == none, null, none);
@@ -16,7 +23,7 @@
   user-select: none;
   background-color: transparent;
   border: $btn-border-width solid transparent;
-  @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-border-radius);
+  @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-border-radius); //$btn-font-size
   @include transition($btn-transition);
 
   &:hover {
