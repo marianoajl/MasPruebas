@@ -3,7 +3,7 @@
 .section {
     grid-area: content;
     @include grid-content-750;
-    padding: var(--main-padding) 0 0 0;
+    padding: var(--main-padding) 15px 0 15px;
 
     .view{
         grid-column: 1 / 5;
@@ -39,7 +39,7 @@
 
         .assistance__subtitle {
             margin: 0 0 var(--margin-bottom-64) 0;
-            padding: 0 var(--padding-190);
+            padding: 0; //var(--padding-190);
             color: var(--light-grey);
             text-align: center;
             
@@ -62,6 +62,10 @@
 
             .assistance__title {
                 padding: 0 var(--padding-160);
+            }
+
+            .assistance__subtitle {
+                padding: 0 var(--padding-190);
             }
         }
     }
