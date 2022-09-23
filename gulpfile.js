@@ -30,6 +30,8 @@ sass.compiler = require("sass");
 const plumber = require("gulp-plumber");
 //Ayuda a producir CSS mejor y mejor estructurado con BEM y SUIT
 const postcss = require("gulp-postcss");
+// Achica el CSS 
+const cssnano = require("cssnano");
 // Muestra el tamaño de tu proyecto
 const size = require("gulp-size");
 // Mapeo de css
@@ -126,9 +128,9 @@ function styles() {
                sass.logError
             )
          )
-         .pipe(postcss([autoprefixer()]))
+         .pipe(postcss([cssnano(), autoprefixer()]))
          .pipe(sourcemaps.write({ addComment: false }))
-         .pipe(cleanCSS({ level: 2 })) // Minifica el código. Si lo pongo debajo de Prettier lo deja minificado + eleimina comentarios.
+         .pipe(cleanCSS({ level: 2 })) // Minifica el código. Si lo pongo debajo de Prettier lo deja minificado + elimina comentarios.
          .pipe(prettier(optionsPrettier)) // Aplica Prettier sobre los CSS
         //   .pipe(sass({ outputStyle: "compressed" }).on("error", sass.logError)) // Minifica el CSS.
          .pipe(gulp.dest(config.styles.output))

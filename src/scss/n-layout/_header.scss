@@ -9,16 +9,26 @@
     @include max-width;
     padding: 0 5px 0 5px;
     height: var(--min-height-paragraph);
-    background: var(--red);
+    //background: var(--red);
     z-index: 100;
 
     .header__logo {
-        fill: var(--white);
+        fill: var(--red);
         width: var(--w-header-logo);
         height: var(--h-header-logo);
 
         &:hover {
             font-weight: var(--fw-600);
+        }
+    }
+
+    .header__items {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .header__select {
+            text-transform: uppercase;
         }
     }
 }
