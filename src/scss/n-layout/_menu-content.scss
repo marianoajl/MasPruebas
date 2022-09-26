@@ -18,5 +18,6 @@
         column-gap: var(--mn-column-gap);
         grid-template-areas: "aside content section"
                              "aside  footer section";
+        //padding: var(--main-padding) 0 0 0;
     }
 }

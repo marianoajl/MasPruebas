@@ -3,7 +3,7 @@
 .section {
     grid-area: content;
     @include grid-content-750;
-    padding: var(--main-padding) 15px 0 15px;
+    padding: 0 15px;
 
     .view{
         grid-column: 1 / 5;
@@ -52,7 +52,7 @@
     .section {
         grid-area: content;
         @include grid-content;
-        padding: var(--main-padding) 0 0 0;
+        padding: 0;
     
         .view {
             grid-column: 1 / 8;
