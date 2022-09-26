@@ -7,11 +7,7 @@
 .section {
     grid-area: content;
     @include grid-content-750;
-<<<<<<< HEAD
     padding: 0 15px;
-=======
-    padding: var(--main-padding-mobile) 15px 0 15px;
->>>>>>> 344dfea32f46a7bbe282301d7fdc21a0653f215a
 
     .view{
         grid-column: 1 / 5;
