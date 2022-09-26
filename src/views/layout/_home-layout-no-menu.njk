@@ -7,6 +7,7 @@
         {% endblock %}
         <title>Asistencia al Viajero - Más que un seguro de viaje ASSIST CARD.</title>
         <link rel="stylesheet" type="text/css" media="screen" href="content/css/vendors/bootstrap-5.0.2/bootstrap.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="content/css/vendors/select2-4.1.0/select2.css">
         {% block css %}
             {# Bloque de estilos por página #}
         {% endblock %}
@@ -43,8 +44,19 @@
         {% block content2 %}
             {# Modales, toast, loaders #}
         {% endblock %}
-
+        {# <script src="content/js/vendors/jQuery-v3.6.1/jQuery-v3.6.1.js"></script> #}
+        <script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" 
+                integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" 
+                crossorigin="anonymous">
+        </script>
         <script src="content/js/vendors/bootstrap-5.0.2/bootstrap.bundle.js"></script>
+        <script src="content/js/vendors/select2-4.1.0/select2.js"></script>
+        <script>
+            $('.js-header__select').select2({
+                minimumResultsForSearch: Infinity,
+                //theme: 'lang'
+            });
+        </script>
         {% block js %}
             {# Bloque de js por página #}
         {% endblock %}

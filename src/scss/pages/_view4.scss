@@ -1,9 +1,17 @@
 @use "n-mixin" as *;
 
+:root {
+    font-size: 14px;
+}
+
 .section {
     grid-area: content;
     @include grid-content-750;
+<<<<<<< HEAD
     padding: 0 15px;
+=======
+    padding: var(--main-padding-mobile) 15px 0 15px;
+>>>>>>> 344dfea32f46a7bbe282301d7fdc21a0653f215a
 
     .view{
         grid-column: 1 / 5;
@@ -30,7 +38,7 @@
 
         .assistance__title{
             margin: 0 0 var(--margin-bottom-48) 0;
-            padding: 0;
+            padding: 0 15%;
             font-size: var(--fs-40);
             line-height: var(--line-height-48);
             color: var(--black-grey);
@@ -39,15 +47,23 @@
 
         .assistance__subtitle {
             margin: 0 0 var(--margin-bottom-64) 0;
-            padding: 0; //var(--padding-190);
+            padding: 0 20%; //var(--padding-190);
             color: var(--light-grey);
             text-align: center;
             
         }
+
+        .btn {
+            @include mg-b-64;
+        }
     }
 }
 
-@media (min-width: 750px) {
+@media (min-width: 900px) {
+
+    :root {
+        font-size: 16px;
+    }
 
     .section {
         grid-area: content;
@@ -61,11 +77,11 @@
         .assistance__event {
 
             .assistance__title {
-                padding: 0 var(--padding-160);
+                padding: 0 20%;
             }
 
             .assistance__subtitle {
-                padding: 0 var(--padding-190);
+                padding: 0 23%;
             }
         }
     }
