@@ -129,10 +129,10 @@ function styles() {
             )
          )
          .pipe(postcss([cssnano(), autoprefixer()]))
+         .pipe(cleanCSS({ level: 1 })) // Minifica el código. Si lo pongo debajo de Prettier lo deja minificado + elimina comentarios.
          .pipe(sourcemaps.write({ addComment: false }))
-         .pipe(cleanCSS({ level: 2 })) // Minifica el código. Si lo pongo debajo de Prettier lo deja minificado + elimina comentarios.
          .pipe(prettier(optionsPrettier)) // Aplica Prettier sobre los CSS
-        //   .pipe(sass({ outputStyle: "compressed" }).on("error", sass.logError)) // Minifica el CSS.
+         //.pipe(sass({ outputStyle: "compressed" }).on("error", sass.logError)) // Minifica el CSS.
          .pipe(gulp.dest(config.styles.output))
          .pipe(browserSync.stream())
    );
@@ -211,9 +211,9 @@ function fileSize() {
 
 function views() {
    let optionsBeautify = {
-       indent_size: 4,
-       indent_level: 0,
-       preserve_newlines: false,
+      indent_size: 4,
+      indent_level: 0,
+      preserve_newlines: false,
    };
    return gulp
       .src(config.html.pages, { base: "src/views" })

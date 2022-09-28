@@ -1,0 +1,90 @@
+@use "n-mixin" as *;
+
+:root {
+    font-size: 14px;
+}
+
+.assistance__name {
+    grid-area: auto / 1 / auto / 8;
+    @include mg-b-32;
+    font-size: var(--fs-12);
+    font-weight: var(--fw-600);
+    text-transform: uppercase;
+}
+
+// @media (min-width: 900px) {
+
+    :root {
+        font-size: 16px;
+    }
+
+    .section {
+        grid-area: content;
+        @include grid-content;
+        padding: 0;
+    
+        .view {
+            grid-column: 1 / 8;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-auto-rows: min-content;
+            grid-gap: 0 21px;
+
+            .assistance__question {
+                grid-column: 1 / 8;
+                @include mg-b-20;
+            }
+                .assistance__form {
+                    grid-column: 1 / 8;
+                    display: grid;
+                    grid-template-columns: repeat(7, 1fr);
+                    grid-auto-rows: min-content;
+                    grid-gap: 0 21px;
+
+
+                .assistance__location__input {
+                    grid-column: 1 / 8;
+                    @include mg-b-16;
+                }
+
+                .assistance__location {
+                    grid-column: 1 / 8;
+                    width: 100%;
+                    height: 218px;
+                    @include mg-b-48;
+                    border-radius: var(--bradius-10);
+                    overflow: hidden; 
+                }
+
+                .assistance__event {
+                    grid-column: 1 / 7;
+                    width: 100%;
+                    display: grid;
+                    grid-template-columns: repeat(6, 1fr);
+                    grid-auto-rows: 78px;
+                    grid-gap: 0 21px;
+                    @include mg-b-70;
+
+                    .assistance__hotel {
+                        grid-column: 1 / 4;
+                    }
+
+                    .assistance__habitacion {
+                        grid-column: 4 / 7;
+                    }
+
+                    .tel {
+                        grid-column: 2 / 4;
+                    }
+
+                    .tel-alt {
+                        grid-column: 5 / 7;
+                    }
+                }
+                .btn-outline-primary {
+                    grid-column: 4 / 5;
+                }
+            }
+        }
+    }
+// }

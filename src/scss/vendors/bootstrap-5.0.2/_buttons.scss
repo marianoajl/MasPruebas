@@ -3,27 +3,22 @@
 //
 
 .btn {
-  // display: inline-block;
-  display: flex; //custom
-  justify-content: center; //custom
-  align-items: center; //custom
+  display: inline-block;
   font-family: $btn-font-family;
-  max-width: var(--w-button); //custom 
-  width: 100%; //custom
-  height: var(--h-button); //custom
-  font-weight: var(--fw-600); //$btn-font-weight; custom
-  line-height: var(--fs-12); //$btn-line-height; custom
-  text-transform: uppercase; //custom
+  font-weight: $btn-font-weight;
+  line-height: $btn-line-height;
+  text-transform: uppercase; // custom AC
   color: $body-color;
   text-align: center;
-  text-decoration: if($link-decoration == none, null, none);
+  letter-spacing: 1px; // custom AC
+  text-decoration: if($link-decoration == none, null, none); // custom AC
   white-space: $btn-white-space;
   vertical-align: middle;
   cursor: if($enable-button-pointers, pointer, null);
   user-select: none;
   background-color: transparent;
   border: $btn-border-width solid transparent;
-  @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-border-radius); //$btn-font-size
+  @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-border-radius); 
   @include transition($btn-transition);
 
   &:hover {
@@ -72,6 +67,8 @@
 @each $color, $value in $theme-colors {
   .btn-outline-#{$color} {
     @include button-outline-variant($value);
+    width: 132px;
+    height: 56px;
   }
 }
 // scss-docs-end btn-variant-loops

@@ -6,7 +6,8 @@
 .form-select {
   display: block;
   width: 100%;
-  padding: $form-select-padding-y $form-select-indicator-padding $form-select-padding-y $form-select-padding-x;
+  padding: 30px 7px 8px 7px; // custom select & input AC
+  // padding: $form-select-padding-y $form-select-indicator-padding $form-select-padding-y $form-select-padding-x;
   // stylelint-disable-next-line property-no-vendor-prefix
   -moz-padding-start: subtract($form-select-padding-x, 3px); // See https://github.com/twbs/bootstrap/issues/32636
   font-family: $form-select-font-family;
@@ -19,15 +20,17 @@
   background-repeat: no-repeat;
   background-position: $form-select-bg-position;
   background-size: $form-select-bg-size;
-  border: $form-select-border-width solid $form-select-border-color;
-  @include border-radius($form-select-border-radius, 0);
+  border: none; // custom input AC 
+  border-bottom: $input-border-width solid $input-border-color; // custom input AC 
+  // border: $form-select-border-width solid $form-select-border-color;
+  // @include border-radius($form-select-border-radius, 0);
   @include box-shadow($form-select-box-shadow);
   @include transition($form-select-transition);
   appearance: none;
 
   &:focus {
-    border-color: $form-select-focus-border-color;
-    outline: 0;
+    // border-color: $form-select-focus-border-color;
+    // outline: 0;
     @if $enable-shadows {
       @include box-shadow($form-select-box-shadow, $form-select-focus-box-shadow);
     } @else {

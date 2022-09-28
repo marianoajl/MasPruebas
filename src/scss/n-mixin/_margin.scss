@@ -3,6 +3,30 @@
     margin-bottom: var(--margin-bottom-16);
 }
 
+@mixin mg-b-20 {
+    margin-bottom: var(--margin-bottom-20);
+}
+
+@mixin mg-b-28 {
+    margin-bottom: var(--margin-bottom-28);
+}
+
+@mixin mg-b-32 {
+    margin-bottom: var(--margin-bottom-32);
+}
+
+@mixin mg-b-48 {
+    margin-bottom: var(--margin-bottom-48);
+}
+
+@mixin mg-b-58 {
+    margin-bottom: var(--margin-bottom-58);
+}
+
 @mixin mg-b-64 {
     margin-bottom: var(--margin-bottom-64);
+}
+
+@mixin mg-b-70 {
+    margin-bottom: var(--margin-bottom-70);
 }

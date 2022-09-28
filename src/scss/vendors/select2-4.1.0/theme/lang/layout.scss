@@ -1,6 +1,7 @@
 .select2-container--default {
   @import "single";
   @import "multiple";
+  @import "dropdown";
 
   &.select2-container--open.select2-container--above {
     .select2-selection--single, .select2-selection--multiple {
@@ -35,7 +36,6 @@
   .select2-results > .select2-results__options {
     max-height: 200px;
     overflow-y: auto;
-    text-transform: uppercase; //custom
   }
 
   .select2-results__option {
@@ -87,8 +87,7 @@
 
   .select2-results__option--highlighted.select2-results__option--selectable {
     background-color: #ecf6ff; // custom
-    //color: white;
-    color: #444; //custom
+    color: white;
   }
 
   .select2-results__group {

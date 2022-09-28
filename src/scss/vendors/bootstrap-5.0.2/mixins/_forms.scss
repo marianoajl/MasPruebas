@@ -24,15 +24,12 @@
   $focus-box-shadow: 0 0 $input-btn-focus-blur $input-focus-width rgba($color, $input-btn-focus-color-opacity)
 ) {
   .#{$state}-feedback {
-    position: absolute; //custom 
-    top: 53px; //custom
     display: none;
     width: 100%;
-    margin-top: $form-feedback-margin-top;
+    margin-top: $form-feedback-margin-top; // custom AC - validación
     @include font-size($form-feedback-font-size);
     font-style: $form-feedback-font-style;
     color: $color;
-    border-top: 1px solid $lipstick;
   }
 
   .#{$state}-tooltip {
@@ -59,19 +56,19 @@
 
   .form-control {
     @include form-validation-state-selector($state) {
-      // border-color: $color; // custom
+      border-color: $color;
 
       @if $enable-validation-icons {
-        // padding-right: $input-height-inner; // custom
-        // background-image: escape-svg($icon); // custom
-        // background-repeat: no-repeat; // custom
-        // background-position: right $input-height-inner-quarter center; // custom
-        // background-size: $input-height-inner-half $input-height-inner-half; // custom
+        // padding-right: $input-height-inner; // custom input AC 
+        // background-image: escape-svg($icon); // custom input AC - elimina imagen
+        background-repeat: no-repeat;
+        background-position: right $input-height-inner-quarter center;
+        background-size: $input-height-inner-half $input-height-inner-half;
       }
 
       &:focus {
-        // border-color: $color; //custom
-        // box-shadow: $focus-box-shadow; //custom
+        // border-color: $color;
+        // box-shadow: $focus-box-shadow;
       }
     }
   }
@@ -93,8 +90,8 @@
       @if $enable-validation-icons {
         &:not([multiple]):not([size]),
         &:not([multiple])[size="1"] {
-          padding-right: $form-select-feedback-icon-padding-end;
-          background-image: escape-svg($form-select-indicator), escape-svg($icon);
+          // padding-right: $form-select-feedback-icon-padding-end; // custom select AC
+          // background-image: escape-svg($form-select-indicator), escape-svg($icon); // custom select AC - elimina imagen
           background-position: $form-select-bg-position, $form-select-feedback-icon-position;
           background-size: $form-select-bg-size, $form-select-feedback-icon-size;
         }

@@ -3,13 +3,13 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    outline: 1px solid black;
+    // outline: 1px solid black;
 
-    &:focus {
-        border-radius: var(--bradius-8);        
-        outline: 2px solid var(--black) !important;
-        // z-index: 1000;
-    }
+    // &:focus {
+    //     border-radius: var(--bradius-8);        
+    //     outline: 2px solid var(--black) !important;
+    //     // z-index: 1000;
+    // }
 
     &::-webkit-scrollbar {
         width: var(--wmn-scrollbar);
@@ -20,15 +20,30 @@
     }
 
     &::-webkit-scrollbar-thumb {
-        background: var(--green);
+        background: var(--grey);
         border-radius: var(--bradius-8);
 
         &:hover {
             background: var(--black);
         }
-    }
+    }   
 }
 
+// Remueve las flechas en los inputs - number
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none; 
+}
+// deja transparente el campo de autocompletado
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active  {
+    transition: background-color 5000s;
+    -webkit-text-fill-color: var(--grey) !important;
+}
     @media (min-width: 750px) {
 
     *::-webkit-scrollbar {

@@ -5,7 +5,7 @@
     @include max-width;
     min-height: var(--min-height);
     grid-template-columns: 1fr;
-    grid-template-rows: minmax(calc(var(--min-height) - var(--main-padding)), auto);
+    // grid-template-rows: minmax(calc(var(--min-height) - var(--main-padding)), auto);
     grid-template-areas: "content";
     padding: var(--main-padding) 0 0 0;
 }

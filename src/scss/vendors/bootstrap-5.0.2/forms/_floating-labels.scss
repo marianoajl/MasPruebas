@@ -1,43 +1,45 @@
 .form-floating {
   position: relative;
+  height: 75px; // custom AC - Height común para <select> e <input>
 
   > .form-control,
   > .form-select {
     height: $form-floating-height;
     line-height: $form-floating-line-height;
-
-    &.focus-input:focus {
-        border-bottom: 1px solid $very-black !important; //custom
-        z-index: 1000;
-      }
   }
 
   > label {
     position: absolute;
-    top: 0;
+    top: 28px; // custom input AC - Pone el label en el espacio del input
     left: 0;
     height: 100%; // allow textareas
-    padding: 1.65rem 0 1rem 0.5rem; // custom label
+    font-size: 0.875rem; // custom input AC
+    //padding: $form-floating-padding-y $form-floating-padding-x; custom input AC
+    padding: 0 0 14px 8px; // custom input AC
     pointer-events: none;
-    border: $input-border-width solid transparent; // Required for aligning label's text with the input as it affects inner box model
+    border: $input-border-width solid transparent; // custom input AC - Required for aligning label's text with the input as it affects inner box model
     transform-origin: 0 0;
     @include transition($form-floating-transition);
   }
 
   // stylelint-disable no-duplicate-selectors
   > .form-control {
-    padding: 1.75rem 4px 0.875rem 0.5rem; // custom para Inputs
+    //padding: $form-floating-padding-y $form-floating-padding-x;
+    padding: 30px 7px 8px 8px; // custom input AC
+    background: transparent; // csutom input AC - deja transparente el fondo
 
     &::placeholder {
       color: transparent;
     }
-
+    &:focus // focus creado para que se marque el border-bottom cuando se selecciona. 
+    { 
+      border-bottom: 1px solid $dark-gray; // custom input AC
+    }
     &:focus,
     &:not(:placeholder-shown) {
-      padding-top: $form-floating-input-padding-t;
-      padding-bottom: $form-floating-input-padding-b;
-      outline: 0; //custom
-      box-shadow: none; //custom
+      // padding-top: $form-floating-input-padding-t; // custom input AC
+      // padding-bottom: $form-floating-input-padding-b; // custom input AC
+      // border-bottom: 1px solid $dark-gray; // custom input AC
     }
     // Duplicated because `:-webkit-autofill` invalidates other selectors when grouped
     &:-webkit-autofill {
@@ -47,8 +49,8 @@
   }
 
   > .form-select {
-    padding-top: $form-floating-input-padding-t;
-    padding-bottom: $form-floating-input-padding-b;
+    // padding-top: $form-floating-input-padding-t; // custom select AC
+    // padding-bottom: $form-floating-input-padding-b; // custom select AC
   }
 
   > .form-control:focus,

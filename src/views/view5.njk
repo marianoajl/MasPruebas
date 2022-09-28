@@ -1,0 +1,107 @@
+{# extending #}
+{% extends "layout/_home-layout-no-menu.njk" %}
+<!-- Main CSS file por ahora lo ponemos aca pero tenemos que hacer un condicional en el layout creo, 
+veamos, porque desarrollo también tiene que cargar los estilos de cada página fuera del layout-->
+
+{# import macros #}
+{% import "macros/_button.njk" as btn %}
+{% import "macros/_button-anchor.njk" as btnLink %}
+
+{# Bloque de estilos especificos de éstá página #}
+{% block css %}
+    <link rel="stylesheet" type="text/css" media="screen" href="content/css/view5.css">
+{% endblock %}
+
+{% block content %}
+    <section class="section">
+        <article class="view">
+            <h6 class="assistance__name">asistencia médica</h6>
+            <h4 class="assistance__question">¿Dónde te encuentras?</h4>
+            <form class="assistance__form needs-validation" novalidate>
+                <div class="form-floating assistance__location__input">
+                    <select type="text" class="form-select" placeholder="Ubicación" required>
+
+                    </select>
+                    <label for="floatingInput">Ubicación</label>
+                    <div class="invalid-feedback">Ingrese ubicación</div>
+                </div>
+                <iframe class="assistance__location" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d26281.264827684554!2d-58.49269769999999!3d-34.574865849999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sar!4v1664302249578!5m2!1sen!2sar" style="border:0;" allowfullscreen="true" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <section class="assistance__event">
+                    <div class="form-floating assistance__hotel">
+                        <input type="date" class="form-control" placeholder="Nombre" required>
+                        <label for="floatingInput">Hotel / lugar</label>
+                        <div class="invalid-feedback">Ingrese Hotel / lugar</div>
+                    </div>
+                    <div class="form-floating assistance__habitacion">
+                        <input type="text" class="form-control" placeholder="Apellido" required>
+                        <label for="floatingInput">Habitación / Departamento</label>
+                        <div class="invalid-feedback">Ingrese Habitación / Departamento</div>
+                    </div>
+                    <div class="form-floating">
+                        <select class="form-select" placeholder="Código país" required>
+                            <option value="1" selected disabled>Código país</option>
+                            <option value="2">+54</option>
+                            <option value="3">+51</option>
+                            <option value="4">+59</option>
+                        </select>
+                        <label>Código país</label>
+                        <div class="invalid-feedback">Código país</div>
+                    </div>
+                    <div class="form-floating tel">
+                        <input type="number" class="form-control" placeholder="Teléfono" required>
+                        <label for="floatingPassword">Teléfono</label>
+                        <div class="invalid-feedback">Ingrese teléfono</div>
+                    </div>
+                    <div class="form-floating">
+                        <select class="form-select" placeholder="Código país">
+                            <option value="1" selected disabled>Código país</option>
+                            <option value="2">+54</option>
+                            <option value="3">+51</option>
+                            <option value="4">+59</option>
+                        </select>
+                        <label for="floatingInput">Código país</label>
+                    </div>
+                    <div class="form-floating tel-alt">
+                        <input type="number" class="form-control" placeholder="Teléfono alternativo">
+                        <label for="floatingPassword">Teléfono alternativo</label>
+                    </div>
+                    <div class="form-floating assistance__hotel">
+                        <input type="email" class="form-control" placeholder="Email" required>
+                        <label for="floatingInput">Email</label>
+                        <div class="invalid-feedback">Ingrese email</div>
+                    </div>
+                </section>
+                <button type="submit" class="btn btn-outline-primary">continuar</button>
+            </form>
+        </article>
+    </section>
+{% endblock %}
+
+{% block content2 %}
+{% endblock %}
+
+{% block js %}
+    {# Bloque de estilos especificos de éstá página #}
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+    </script>
+{% endblock %}
