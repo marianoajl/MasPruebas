@@ -5,11 +5,12 @@
     box-sizing: border-box;
     // outline: 1px solid black;
 
-    // &:focus {
-    //     border-radius: var(--bradius-8);        
-    //     outline: 2px solid var(--black) !important;
-    //     // z-index: 1000;
-    // }
+    &:focus {
+        // border-radius: var(--bradius-8);        
+        // border: none  !important;
+        // outline: none !important;
+        // z-index: 1000;
+    }
 
     &::-webkit-scrollbar {
         width: var(--wmn-scrollbar);
@@ -41,7 +42,7 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active  {
-    transition: background-color 5000s;
+    transition: background-color 9000s;
     -webkit-text-fill-color: var(--grey) !important;
 }
     @media (min-width: 750px) {

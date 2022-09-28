@@ -1,15 +1,15 @@
 .select2-dropdown {
-  background-color: white;
-  //border: 1px solid #aaa;
-  //border-radius: 4px;
-  box-sizing: border-box;
-  display: block;
-  position: absolute;
-  left: -100000px;
-
-  width: 100%;
-
-  z-index: 1051;
+	// background-color: white;
+	border: 0;
+  font-size: 14px; //custom
+	//border-radius: 1px; //custom
+  // box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.38); //custom
+	box-sizing: border-box;
+	display: block;
+	position: absolute;
+	left: -100000px;
+	width: 100%;
+	z-index: 1051;
 }
 
 .select2-results {
@@ -23,8 +23,7 @@
 }
 
 .select2-results__option {
-  padding: 6px;
-
+  //padding: 9px 8px; //custom
   user-select: none;
   -webkit-user-select: none;
 }

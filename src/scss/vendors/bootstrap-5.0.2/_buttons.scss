@@ -29,7 +29,7 @@
   .btn-check:focus + &,
   &:focus {
     outline: 0;
-    box-shadow: $btn-focus-box-shadow;
+    // box-shadow: $btn-focus-box-shadow; // custom AC
   }
 
   .btn-check:checked + &,

@@ -1,7 +1,7 @@
 .select2-selection--single {
   background-color: transparent;
-  border-bottom: 1px solid var(--border-btm-input); //custom AC
-  height: 58px; //custom
+  border-bottom: 1px solid #808080; //custom
+  height: 61px; //custom
   &:focus {
       border-bottom: 1px solid #323232; //custom
   }
@@ -9,6 +9,7 @@
   .select2-selection__rendered {
     color: #474747; //custom
     line-height: 28px;
+    padding-right: 33px; //custom para que en el campo de cód. tel se reduzca con flecha + asterisco
   }
 
   .select2-selection__clear {
@@ -28,9 +29,9 @@
   .select2-selection__arrow {
     position: absolute;
     background: url(../../../img/icons/arrow-menu.svg) no-repeat right center;
-   
-    top: 31px; //custom
-    right: 7px; //custom AC
+
+    top: 31px; // custom
+    right: 20px; // custom - flecha corrida para darle lugar al asterisco.
     width: 0.698rem;
     height: 1.411rem;
     transition: all 0.2s ease-out;
@@ -73,5 +74,4 @@
       }
     }
   }
-
 

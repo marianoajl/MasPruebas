@@ -1,4 +1,4 @@
-.select2-container--default {
+.select2-container--secondary {
   @import "single";
   @import "multiple";
   @import "dropdown";
@@ -34,8 +34,19 @@
   }
 
   .select2-results > .select2-results__options {
-    max-height: 200px;
+    display: flex; //custom
+    flex-direction: column; //custom
+    justify-content: center; //custom
+    position: absolute; //custom
+    top: -11px; //custom para que el menú se mantenga cerca del select
+    //left: -9px; //custom
+    width: 81px; //custom
+    min-height: 56px; //custom
     overflow-y: auto;
+    font-size: 0.875rem; //custom para el selector de lenguajes 
+    border-radius: 8px; //custom
+    box-shadow: 0px 1px 4px rgba(11, 11, 11, 0.3); //custom
+    background-color: #ffffff; //custom
   }
 
   .select2-results__option {
@@ -82,12 +93,12 @@
   }
 
   .select2-results__option--selected {
-    background-color: #ffffff;
+    display: none;
   }
 
   .select2-results__option--highlighted.select2-results__option--selectable {
     background-color: #ecf6ff; //custom
-		color: #323232; //custom
+		color: #474747; //custom
   }
 
   .select2-results__group {
@@ -96,6 +107,4 @@
     padding: 6px;
   }
 }
-
-
-
+ 

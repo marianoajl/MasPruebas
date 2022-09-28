@@ -68,7 +68,7 @@
 
       &:focus {
         // border-color: $color;
-        // box-shadow: $focus-box-shadow;
+        // box-shadow: $focus-box-shadow; // custom AC
       }
     }
   }
@@ -98,8 +98,8 @@
       }
 
       &:focus {
-        border-color: $color;
-        box-shadow: $focus-box-shadow;
+        // border-color: $color;
+        // box-shadow: $focus-box-shadow; // custom AC
       }
     }
   }

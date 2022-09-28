@@ -78,7 +78,7 @@
 @mixin button-outline-variant(
   $color,
   $color-hover: $color, // custom AC - btn-outline- //color-contrast($color),
-  $active-background: rgba($color, .2), // custom AC - btn-outline-
+  $active-background: rgba($color, .1), // custom AC - btn-outline-
   $active-border: $color,
   $active-color: color-contrast($active-background)
 ) {
@@ -93,7 +93,7 @@
 
   .btn-check:focus + &,
   &:focus {
-    box-shadow: 0 0 0 $btn-focus-width rgba($color, .5);
+    // box-shadow: 0 0 0 $btn-focus-width rgba($color, .5); // custom AC
   }
 
   .btn-check:checked + &,
