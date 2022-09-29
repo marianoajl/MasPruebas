@@ -15,10 +15,8 @@
     }
 
     .assistance__name {
-        margin: 0 0 var(--margin-bottom-80) 0;
-        font-size: var(--fs-12);
-        font-weight: var(--fw-600);
-        text-transform: uppercase;
+        @include mg-b-80;
+        @include assistance-title;
     }
 
     .assistance__event {

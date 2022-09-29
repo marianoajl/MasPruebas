@@ -7,9 +7,7 @@
 .assistance__name {
     grid-area: auto / 1 / auto / 8;
     @include mg-b-32;
-    font-size: var(--fs-12);
-    font-weight: var(--fw-600);
-    text-transform: uppercase;
+    @include assistance-title;
 }
 
 // @media (min-width: 900px) {

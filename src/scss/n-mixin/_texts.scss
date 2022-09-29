@@ -1,0 +1,7 @@
+// texts
+@mixin assistance-title{
+    font-size: var(--fs-12);
+    font-weight: var(--fw-600);
+    text-transform: uppercase;
+    color: var(--black-50);
+}

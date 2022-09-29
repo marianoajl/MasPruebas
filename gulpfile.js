@@ -245,7 +245,7 @@ function dev() {
    browserSync.init({
       server: {
          baseDir: "./dist",
-         index: "/view4.html",
+         index: "/view5.html",
       },
    });
    gulp.watch("src/scss/**/*.scss", styles);
