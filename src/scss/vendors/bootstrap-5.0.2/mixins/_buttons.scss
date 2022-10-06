@@ -101,7 +101,7 @@
   &:active,
   &.active,
   &.dropdown-toggle.show {
-    color: $active-color;
+    // color: $active-color; // custom btn AC
     background-color: $active-background;
     border-color: $active-border;
 

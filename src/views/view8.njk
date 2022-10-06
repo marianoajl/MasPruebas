@@ -1,0 +1,30 @@
+{# extending #}
+{% extends "layout/_home-layout-no-menu.njk" %}
+<!-- Main CSS file por ahora lo ponemos aca pero tenemos que hacer un condicional en el layout creo, 
+veamos, porque desarrollo también tiene que cargar los estilos de cada página fuera del layout-->
+
+{# import macros #}
+{% import "macros/_button.njk" as btn %}
+{% import "macros/_button-anchor.njk" as btnLink %}
+
+{# Bloque de estilos especificos de éstá página #}
+{% block css %}
+    <link rel="stylesheet" type="text/css" media="screen" href="content/css/view8.css">
+{% endblock %}
+
+{% block content %}
+    <section class="section">
+        <article class="view">
+        </article>
+    </section>
+{% endblock %}
+
+{% block content2 %}
+{% endblock %}
+
+{% block js %}
+    {# Bloque de estilos especificos de éstá página #}
+    {# <script>
+        
+    </script> #}
+{% endblock %}

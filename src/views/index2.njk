@@ -1,0 +1,574 @@
+<html>
+    <head>
+        <!-- ARCHIVOS DE FORMULARIOS DE GATEWAY EN EL HEAD -->
+        <script src="https://apimyac_qa.assistcard.com/Scripts/jquery?v=20220110022130"></script>
+        <!-- CSS only -->
+        {# <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"> #}
+        <!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script src="https://js-sandbox.dlocal.com"></script><style type="text/css">.credit-card-container *{-webkit-box-sizing:border-box;box-sizing:border-box}.credit-card-container{height:100%;background:#fff}.credit-card-container>div{height:40px;padding:10px 12px;width:100%}div[class$="--autofilled"]{background-color:#fefde5}</style>
+        <script src="https://gatewayapi-qa.assistcard.com/Content/Scripts/CGMainScript.js?v=20211119021954"></script>
+        <script src="https://gatewayapi-qa.assistcard.com/Content/Scripts/DLocalSmartFieldApi.js?v=20211201054123"></script>
+        <script>  
+    var gateway = 'dlocal_localurlnotpci_onlinepayment_nosplit_inmediateapproval';
+    var installments = "-1";   
+
+    gatewayCustomEvents = {
+        externalOperationClientSide: function (changedFieldCode, changedFieldSplitCode) {
+            if (changedFieldCode == 'GATEWAYFIELD_INSTALLMENTS') {
+                var dependentObject = $("#GATEWAYFIELD_INSTALLMENTS_1 option:selected ").attr("data-dependentObject");
+                var isUpdatedVersion = false;
+                var dependentInstallments = $("#GATEWAYFIELD_INSTALLMENTS_1 option:selected ").attr("data-installments");;
+                if (dependentObject !== undefined || dependentInstallments !== undefined) {
+                    var total = "";
+                    if (dependentObject == undefined) {
+                        isUpdatedVersion = true;
+                        total = $("#GATEWAYFIELD_INSTALLMENTS_1_DependentObject").val().split("|")[1];
+                        if (total == undefined) {
+                            var total = $("#GATEWAYFIELD_INSTALLMENTS_1 option:selected ").text().split('|')[1];
+                            if (total.indexOf(':') >= 0) {
+                                total = $("#GATEWAYFIELD_INSTALLMENTS_1 option:selected ").text().split('|')[1].split(':')[1]
+                            }
+                        }
+                    }
+                    else {
+                        total = dependentObject.split("|")[1];
+                    }
+                    $("#ProductPaymentTotal").text(total);
+                    $("#price").text(total);
+                    if ($("select#GATEWAYFIELD_INSTALLMENTS_1 option").length > 1) {
+                        var txtCuotas = $("#GATEWAYFIELD_INSTALLMENTS_1 option:selected ").text();
+                        if (isUpdatedVersion) {
+                            txtCuotas = txtCuotas.split("|")[0];
+                        }
+                        $("#PaymentResumenInstallment").text(txtCuotas);
+                        $("#ProductPaymentDetail").text(txtCuotas);
+                        $("#PaymentResumenInstallment").show();
+                        $("#ProductPaymentDetail").show();
+                        if ($("#chkVersion") != undefined && $("#chkVersion").val() == "V2") {
+                            var txtCurrencyAmount = "";
+                            if (isUpdatedVersion) {
+                                txtCurrencyAmount = $("#GATEWAYFIELD_INSTALLMENTS_1 option:selected ").text().split('|')[1];
+                            }
+                            else {
+                                txtCurrencyAmount = $("#GATEWAYFIELD_INSTALLMENTS_1 option:selected").data('dependentobject').split('|')[1];
+                            }
+                            var x = document.getElementsByClassName("product-payment-total");
+                            var i;
+                            for (i = 0; i < x.length; i++) {
+                                x[i].innerHTML = txtCurrencyAmount;
+                            }
+                        }
+                    }
+                }
+                else {
+                    $("#ProductPaymentTotal").text('');
+                    $("#price").text('');
+                    $("#PaymentResumenInstallment").hide();
+                    $("#ProductPaymentDetail").hide();
+                }
+            }
+        },
+        externalOperationServerSideResponse: function (changedFieldCode, changedFieldSplitCode, result) {
+            //alert(result);
+        }
+    }
+
+
+
+    var checkoutForm = {
+        tempData: null,
+        setTempData: function (TempData) {
+            checkoutForm.tempData = TempData;
+        },        
+        //updateField es llamar al server a que actualice un campo (por el cambio de selecciÃ³n de otro campo)
+        updateField: function (updatingFieldCode, updatingFieldSplitCode, url) {
+            var data = {
+                'Parameters':
+                 {
+                     'updatingFieldCode': updatingFieldCode,
+                     'updatingFieldSplitCode': updatingFieldSplitCode,
+                     'formValues': $('form').serializeArray(),
+                     'TempData': checkoutForm.tempData
+                 }
+            };
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                dataType: "html",
+                success: function (result) {
+                    var formFieldId = checkoutForm.getFormFieldId(updatingFieldCode, updatingFieldSplitCode);
+                    var jQueryElement = $('#div' + formFieldId);
+                    jQueryElement.html(result);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(xhr.status);
+                    console.log(thrownError);
+                }
+            });
+        },
+        //validateField es llamar al server a que valide el dato ingresado en un campo de textbox
+        validateField: function (validatingFieldCode, validatingFieldSplitCode, url) {
+            var formFieldId = checkoutForm.getFormFieldId(validatingFieldCode, validatingFieldSplitCode);
+            var jQueryElement = $('#' + formFieldId);
+            var domElement = jQueryElement[0];
+            var isValdateRegexValid = domElement.checkValidity();
+            if (jQueryElement.attr('pattern')) {
+                var reg = new RegExp(jQueryElement.attr("pattern"));
+                if (!reg.test(jQueryElement.val())) {
+                    //El texto ingresado no es vÃ¡lido segÃºn la validaciÃ³n client side. Muestro el error
+                    domElement.setCustomValidity(jQueryElement.attr('title'));
+                    return;
+                }
+            }
+            //pasÃ³ la validaciÃ³n client side. Hago la server side
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: $.param({ 'validatingFieldCode': validatingFieldCode }) + '&' + $.param({ 'validatingFieldSplitCode': validatingFieldSplitCode }) + '&' + $('#personalInfo').serialize(),
+                success: function (result) {
+                    domElement.setCustomValidity(result);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(validatingFieldCode);
+                    console.log(xhr.status);
+                    console.log(thrownError);
+                }
+            });
+        },
+        selectComboChanged: function (changedFieldCode, changedFieldSplitCode, externalOperationOnChange, url) {
+            var formFieldId = checkoutForm.getFormFieldId(changedFieldCode, changedFieldSplitCode);
+            var dependentObjectValue = $('#' + formFieldId + ' option:selected ').attr("data-dependentObject");
+            $('#' + formFieldId + '_DependentObject').val(dependentObjectValue);
+            gatewayCustomEvents.externalOperationClientSide(changedFieldCode, changedFieldSplitCode);
+            if (externalOperationOnChange)
+                checkoutForm.externalOperationServerSide(changedFieldCode, changedFieldSplitCode);
+        },
+        externalOperationServerSide: function (changedFieldCode, changedFieldSplitCode) {
+            //$.ajax({
+            //    type: "POST",
+            //    url: url,
+            //    data: $.param({ 'updatingFieldCode': changedFieldCode }) + '&' + $.param({ 'updatingFieldSplitCode': changedFieldSplitCode }) + '&' + $('#personalInfo').serialize(),
+            //    success: function (result) {
+            //        gatewayCustomEvents.externalOperationServerSideResponse(changedFieldCode, changedFieldSplitCode, result);
+            //    },
+            //    error: function (xhr, ajaxOptions, thrownError) {
+            //        console.log(changedFieldCode);
+            //        console.log(xhr.status);
+            //        console.log(thrownError);
+            //    }
+            //});
+        },
+        getFormFieldId: function (fieldCode, fieldSplitCode) {
+            return fieldCode + '_' + fieldSplitCode;
+        }
+    }
+
+    checkoutForm.setTempData([{"Key":"ContextData","Value":{"PaymentGoal":"RENEWAL","PaymentRequestIdentifier":"540-19204967-05L","PaymentAmount":1,"VisitorIp":"NADA","ListDTOFieldReturn":null,"PaymentCode":null,"OverridenGatewayConfigs":null,"DolarQuote":101.0,"CountryCode":540,"IssuingPointModuleCode":"MOBILE","IssuingChannelCode":"99899","IssuingCode":"99899","LanguageCode":"es","BranchNumber":0,"GatewayImplementationCode":"DLocal_LocalUrlNotPci_OnlinePayment_NoSplit_InmediateApproval","RecurringPayment":false,"BusinessDocumentType":false,"BusinessName":null,"ProductCode":"5L","RateCode":"99719","ContextParams":{"CurrentCulture":"es","CountryCode":540,"IssuingPointModuleCode":"MOBILE","IssuingCode":"99899","BranchCode":0,"RateCode":"99719","PaymentGoal":"RENEWAL","ProductCode":"5L","BaseAmmount":1,"PaymentRequestIdentifier":"540-19204967-05L","isDirectSale":false,"Pax1Email":"renovas2@yopmail.com","Pax1Nombre":"RENOVAS2","Pax1Apellido":"R","DolarQuote":101.0,"CurrencySymbol_UI":"ARS"}}},{"Key":"dicUrls","Value":{"url_UpdateField":"https://apimyac_qa.assistcard.com/Api/Payment/UpdateField","url_ValidateField":"https://apimyac_qa.assistcard.com/Api/Payment/ValidateField","url_SelectComboChanged":"https://apimyac_qa.assistcard.com/Api/Payment/SelectComboChanged","url_SubmitCheckoutForm":"https://apimyac_qa.assistcard.com/Api/Payment/SubmitCheckoutForm"}},{"Key":"bAddJquery","Value":true},{"Key":"NextFieldInLeftColumn","Value":true},{"Key":"DicFieldsInLeftPosition","Value":{}}]);
+    
+</script>
+
+<!-- FIN DE ARCHIVOS DE FORMULARIOS DE GATEWAY EN EL HEAD -->
+
+</head>
+<!-- ARCHIVOS DE FORMULARIOS DE GATEWAY EN EL BODY -->
+<body style=""><form id="formDLocal" method="post" action="SubmitCheckoutForm" data-parsley-validate="">
+    <br>
+    <input type="hidden" name="ContextData" id="ContextData" value="{&quot;PaymentGoal&quot;:&quot;RENEWAL&quot;,&quot;PaymentRequestIdentifier&quot;:&quot;540-19204967-05L&quot;,&quot;PaymentAmount&quot;:1,&quot;VisitorIp&quot;:&quot;NADA&quot;,&quot;ListDTOFieldReturn&quot;:null,&quot;PaymentCode&quot;:null,&quot;OverridenGatewayConfigs&quot;:null,&quot;DolarQuote&quot;:101.0,&quot;CountryCode&quot;:540,&quot;IssuingPointModuleCode&quot;:&quot;MOBILE&quot;,&quot;IssuingChannelCode&quot;:&quot;99899&quot;,&quot;IssuingCode&quot;:&quot;99899&quot;,&quot;LanguageCode&quot;:&quot;es&quot;,&quot;BranchNumber&quot;:0,&quot;GatewayImplementationCode&quot;:&quot;DLocal_LocalUrlNotPci_OnlinePayment_NoSplit_InmediateApproval&quot;,&quot;RecurringPayment&quot;:false,&quot;BusinessDocumentType&quot;:false,&quot;BusinessName&quot;:null,&quot;ProductCode&quot;:&quot;5L&quot;,&quot;RateCode&quot;:&quot;99719&quot;,&quot;ContextParams&quot;:{&quot;CurrentCulture&quot;:&quot;es&quot;,&quot;CountryCode&quot;:540,&quot;IssuingPointModuleCode&quot;:&quot;MOBILE&quot;,&quot;IssuingCode&quot;:&quot;99899&quot;,&quot;BranchCode&quot;:0,&quot;RateCode&quot;:&quot;99719&quot;,&quot;PaymentGoal&quot;:&quot;RENEWAL&quot;,&quot;ProductCode&quot;:&quot;5L&quot;,&quot;BaseAmmount&quot;:1,&quot;PaymentRequestIdentifier&quot;:&quot;540-19204967-05L&quot;,&quot;isDirectSale&quot;:false,&quot;Pax1Email&quot;:&quot;renovas2@yopmail.com&quot;,&quot;Pax1Nombre&quot;:&quot;RENOVAS2&quot;,&quot;Pax1Apellido&quot;:&quot;R&quot;,&quot;DolarQuote&quot;:101.0,&quot;CurrencySymbol_UI&quot;:&quot;ARS&quot;}}">
+
+    <div class="container">       
+        <div class="row">
+            <input type="hidden" name="CGSELECTION_CardName" id="CGSELECTION_CardName">
+                <div id="divdlocalsettings_0" data-fieldtype="dlocalsettings" class="col-lg-12">
+
+
+
+
+
+<div data-country="AR" data-isgeneratepaymentbuttonfield="False" data-key="7b2d2f1f-a0a2-4e28-927a-8caf0f48a4c2" data-locale="es" id="GATEWAYFIELD_dlocalsettings_0"></div>
+
+                </div>
+                <div id="divGATEWAYFIELD_BANKS_1" data-fieldtype="GATEWAYFIELD_BANKS" class="col-lg-6" style="display: none;">
+
+
+
+
+<script>
+            $(function () {
+                console.log('idFormField', '#GATEWAYFIELD_BANKS_1');
+                $('#GATEWAYFIELD_BANKS_1').change(function () {
+                    console.log('change', '#GATEWAYFIELD_BANKS_1');
+                    //checkoutForm.setTempData([{"Key":"ContextData","Value":{"PaymentGoal":"RENEWAL","PaymentRequestIdentifier":"540-19204967-05L","PaymentAmount":1,"VisitorIp":"NADA","ListDTOFieldReturn":null,"PaymentCode":null,"OverridenGatewayConfigs":null,"DolarQuote":101.0,"CountryCode":540,"IssuingPointModuleCode":"MOBILE","IssuingChannelCode":"99899","IssuingCode":"99899","LanguageCode":"es","BranchNumber":0,"GatewayImplementationCode":"DLocal_LocalUrlNotPci_OnlinePayment_NoSplit_InmediateApproval","RecurringPayment":false,"BusinessDocumentType":false,"BusinessName":null,"ProductCode":"5L","RateCode":"99719","ContextParams":{"CurrentCulture":"es","CountryCode":540,"IssuingPointModuleCode":"MOBILE","IssuingCode":"99899","BranchCode":0,"RateCode":"99719","PaymentGoal":"RENEWAL","ProductCode":"5L","BaseAmmount":1,"PaymentRequestIdentifier":"540-19204967-05L","isDirectSale":false,"Pax1Email":"renovas2@yopmail.com","Pax1Nombre":"RENOVAS2","Pax1Apellido":"R","DolarQuote":101.0,"CurrencySymbol_UI":"ARS"}}},{"Key":"dicUrls","Value":{"url_UpdateField":"https://apimyac_qa.assistcard.com/Api/Payment/UpdateField","url_ValidateField":"https://apimyac_qa.assistcard.com/Api/Payment/ValidateField","url_SelectComboChanged":"https://apimyac_qa.assistcard.com/Api/Payment/SelectComboChanged","url_SubmitCheckoutForm":"https://apimyac_qa.assistcard.com/Api/Payment/SubmitCheckoutForm"}},{"Key":"bAddJquery","Value":true},{"Key":"NextFieldInLeftColumn","Value":true},{"Key":"DicFieldsInLeftPosition","Value":{}}]);
+
+                    checkoutForm.updateField('GATEWAYFIELD_CARDS', '1', 'https://apimyac_qa.assistcard.com/Api/Payment/UpdateField');
+                });
+
+                if ('True') //si esto es true, se puede actualizar los hijos
+                {
+
+                     console.log('idFormField', '#GATEWAYFIELD_BANKS_1');
+                        console.log('bFieldCombo', 'True');
+                        //checkoutForm.setTempData([{"Key":"ContextData","Value":{"PaymentGoal":"RENEWAL","PaymentRequestIdentifier":"540-19204967-05L","PaymentAmount":1,"VisitorIp":"NADA","ListDTOFieldReturn":null,"PaymentCode":null,"OverridenGatewayConfigs":null,"DolarQuote":101.0,"CountryCode":540,"IssuingPointModuleCode":"MOBILE","IssuingChannelCode":"99899","IssuingCode":"99899","LanguageCode":"es","BranchNumber":0,"GatewayImplementationCode":"DLocal_LocalUrlNotPci_OnlinePayment_NoSplit_InmediateApproval","RecurringPayment":false,"BusinessDocumentType":false,"BusinessName":null,"ProductCode":"5L","RateCode":"99719","ContextParams":{"CurrentCulture":"es","CountryCode":540,"IssuingPointModuleCode":"MOBILE","IssuingCode":"99899","BranchCode":0,"RateCode":"99719","PaymentGoal":"RENEWAL","ProductCode":"5L","BaseAmmount":1,"PaymentRequestIdentifier":"540-19204967-05L","isDirectSale":false,"Pax1Email":"renovas2@yopmail.com","Pax1Nombre":"RENOVAS2","Pax1Apellido":"R","DolarQuote":101.0,"CurrencySymbol_UI":"ARS"}}},{"Key":"dicUrls","Value":{"url_UpdateField":"https://apimyac_qa.assistcard.com/Api/Payment/UpdateField","url_ValidateField":"https://apimyac_qa.assistcard.com/Api/Payment/ValidateField","url_SelectComboChanged":"https://apimyac_qa.assistcard.com/Api/Payment/SelectComboChanged","url_SubmitCheckoutForm":"https://apimyac_qa.assistcard.com/Api/Payment/SubmitCheckoutForm"}},{"Key":"bAddJquery","Value":true},{"Key":"NextFieldInLeftColumn","Value":true},{"Key":"DicFieldsInLeftPosition","Value":{}}]);
+                        checkoutForm.updateField('GATEWAYFIELD_CARDS', '1', 'https://apimyac_qa.assistcard.com/Api/Payment/UpdateField');
+                 
+                
+                 }
+            });
+        </script>
+
+
+<input id="GATEWAYFIELD_BANKS_1" name="GATEWAYFIELD_BANKS_1" type="hidden" value="NOT_BANK">            <script>
+                $(function () {
+                    $("#divGATEWAYFIELD_BANKS_1").hide();
+                })
+            </script>                                                                                                                                                                           
+
+                </div>
+                <div id="divcard-pan_0" data-fieldtype="card-pan" class="form-control ml-3 DLocalPan">
+
+
+
+
+
+<div data-isgeneratepaymentbuttonfield="True" id="GATEWAYFIELD_card-pan_0"><div id="credit-card-wrapper" class="DlocalField DlocalField--empty"><div id="4c0ae38d-b5ad-4013-559a-a403fbfe76d6" style="height: 18px;"><div style="height: 100%;"><div id="zoid-pan-component-3f671a27cc_mtg6mje6mti"><iframe allowtransparency="true" name="__zoid__pan_component__eyJ1aWQiOiJ6b2lkLXBhbi1jb21wb25lbnQtM2Y2NzFhMjdjY19tdGc2bWplNm10aSIsImNvbnRleHQiOiJpZnJhbWUiLCJ0YWciOiJwYW4tY29tcG9uZW50IiwidmVyc2lvbiI6IjlfMF81NCIsImNoaWxkRG9tYWluIjoiaHR0cHM6Ly9zdGF0aWMtc2FuZGJveC5kbG9jYWwuY29tIiwicGFyZW50RG9tYWluIjoiaHR0cHM6Ly9hcGlteWFjX3FhLmFzc2lzdGNhcmQuY29tIiwicGFyZW50Ijp7InR5cGUiOiJwYXJlbnQiLCJkaXN0YW5jZSI6MH0sInByb3BzIjp7InR5cGUiOiJyYXciLCJ2YWx1ZSI6IntcIm9uQ2hpbGRBY3Rpb25cIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcImVlYzUyOWJhNTJfbXRnNm1qZTZtdGlcIixcIm5hbWVcIjpcIm9uQ2hpbGRBY3Rpb25cIn19LFwib25QYXJlbnRBY3Rpb25cIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcImQ3ZmUyOGU2ZGNfbXRnNm1qZTZtdGlcIixcIm5hbWVcIjpcIm9uUGFyZW50QWN0aW9uXCJ9fSxcIm1lcmNoYW50U3R5bGVzXCI6e1wibWVyY2hhbnRDc3NSdWxlc1wiOntcImJhc2VcIjp7XCJmb250U2l6ZVwiOlwiMTNweFwiLFwiZm9udEZhbWlseVwiOlwic2Fucy1zZXJpZlwiLFwiZm9udFdlaWdodFwiOlwiNDAwXCIsXCJjb2xvclwiOlwiIzRhNGE0YVwiLFwiOjpwbGFjZWhvbGRlclwiOntcImNvbG9yXCI6XCJncmF5XCJ9LFwiY2FyZXRDb2xvclwiOlwiIzRhNGE0YVwifX0sXCJtZXJjaGFudENsYXNzZXNcIjp7XCJiYXNlXCI6XCJEbG9jYWxGaWVsZFwiLFwiaW52YWxpZFwiOlwiRGxvY2FsRmllbGQtLWludmFsaWRcIixcImVtcHR5XCI6XCJEbG9jYWxGaWVsZC0tZW1wdHlcIixcImNvbXBsZXRlXCI6XCJEbG9jYWxGaWVsZC0tY29tcGxldGVcIixcImZvY3VzXCI6XCJEbG9jYWxGaWVsZC0tZm9jdXNcIixcImF1dG9maWxsZWRcIjpcIkRsb2NhbEZpZWxkLS1hdXRvZmlsbGVkXCJ9LFwibWVyY2hhbnRGb250c1wiOm51bGwsXCJtZXJjaGFudExvY2FsZVwiOlwiZXNcIixcIm1lcmNoYW50UGxhY2Vob2xkZXJzXCI6XCJOw5pNRVJPIERFIFRBUkpFVEFcIixcIm1lcmNoYW50Q3NzUnVsZXNSZXN1bHRDbGFzc2VzXCI6bnVsbCxcIm1lcmNoYW50Q2FyZEljb25Db2xvclwiOm51bGwsXCJtZXJjaGFudENhcmRJbnZhbGlkSWNvbkNvbG9yXCI6bnVsbH0sXCJmaWVsZHNcIjp7XCJmaWVsZHNFcnJvcnNcIjp7XCJjdnZcIjpudWxsLFwiZXhwaXJhdGlvblwiOm51bGwsXCJudW1iZXJcIjpudWxsfSxcImZpZWxkc1ZhbHVlc1wiOntcImN2dlwiOlwiXCIsXCJleHBpcmF0aW9uXCI6XCJcIixcIm51bWJlclwiOlwiXCJ9LFwiZmllbGRzRmluaXNoXCI6e1wiY3Z2XCI6ZmFsc2UsXCJleHBpcmF0aW9uXCI6ZmFsc2UsXCJudW1iZXJcIjpmYWxzZX0sXCJwaW5FcnJvcnNcIjp7XCJwaW5cIjpudWxsLFwib2xkUGluXCI6bnVsbCxcIm5ld1BpblwiOm51bGx9LFwicGluVmFsdWVzXCI6e1wicGluXCI6XCJcIixcIm9sZFBpblwiOlwiXCIsXCJuZXdQaW5cIjpcIlwifSxcInBpbkZpbmlzaFwiOntcInBpblwiOmZhbHNlLFwib2xkUGluXCI6ZmFsc2UsXCJuZXdQaW5cIjpmYWxzZX0sXCJpc0NvbXBsZXRlXCI6ZmFsc2UsXCJpc0VtcHR5XCI6dHJ1ZSxcImlzRm9jdXNcIjpmYWxzZSxcImlzQXV0b2ZpbGxlZFwiOmZhbHNlLFwiZm9yY2VCbHVyXCI6ZmFsc2UsXCJmb3JjZUNsZWFyXCI6ZmFsc2UsXCJmb3JjZUZvY3VzXCI6ZmFsc2UsXCJmb3JjZVVubW91bnRcIjpmYWxzZSxcImZvcmNlRGVzdHJveVwiOmZhbHNlLFwiY29uZmlnXCI6e1widHlwZVwiOlwicGFuXCIsXCJhcGlLZXlcIjpcIjdiMmQyZjFmLWEwYTItNGUyOC05MjdhLThjYWYwZjQ4YTRjMlwiLFwiY291bnRyeVwiOlwiQVJcIixcImd1aWRcIjpcIjRjMGFlMzhkLWI1YWQtNDAxMy01NTlhLWE0MDNmYmZlNzZkNlwiLFwicGFyZW50R1VJRFwiOlwiMTg4ODhlMjgtNzBlZS1lMTRjLTdjMjQtZGZiM2M0OWFkMGI3XCIsXCJjYXJkSW5mb3JtYXRpb25JbWFnZVwiOm51bGwsXCJjYXJkSW5mb3JtYXRpb25EYXRhXCI6bnVsbCxcIm1haW5GaWVsZFwiOlwicGFuXCJ9fSxcImd1aWRcIjpcIjRjMGFlMzhkLWI1YWQtNDAxMy01NTlhLWE0MDNmYmZlNzZkNlwiLFwicGFyZW50R1VJRFwiOlwiMTg4ODhlMjgtNzBlZS1lMTRjLTdjMjQtZGZiM2M0OWFkMGI3XCIsXCJhcGlLZXlcIjpcIjdiMmQyZjFmLWEwYTItNGUyOC05MjdhLThjYWYwZjQ4YTRjMlwiLFwiY291bnRyeVwiOlwiQVJcIn0ifSwiZXhwb3J0cyI6IntcImluaXRcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcIjRhNzk5ZTIwMWRfbXRnNm1qZTZtdGlcIixcIm5hbWVcIjpcIldlXCJ9fSxcImNsb3NlXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCI5ZjE5YjcwNTk2X210ZzZtamU2bXRpXCIsXCJuYW1lXCI6XCJxZVwifX0sXCJjaGVja0Nsb3NlXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCI1Njc2NDBjZmQ0X210ZzZtamU2bXRpXCIsXCJuYW1lXCI6XCJjaGVja0Nsb3NlXCJ9fSxcInJlc2l6ZVwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwiNTNlZmUyMTI0Nl9tdGc2bWplNm10aVwiLFwibmFtZVwiOlwiVmVcIn19LFwib25FcnJvclwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwiZDcwMTNlZWE3NF9tdGc2bWplNm10aVwiLFwibmFtZVwiOlwiS2VcIn19LFwic2hvd1wiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwiN2QzMDFjYmE5N19tdGc2bWplNm10aVwiLFwibmFtZVwiOlwiZ2VcIn19LFwiaGlkZVwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwiZTg5NDNhNmI4NF9tdGc2bWplNm10aVwiLFwibmFtZVwiOlwid2VcIn19fSJ9__" title="pan_component" id="d751e99671_mtg6mje6mti" class="zoid-visible" style="background-color: transparent; border: none;"></iframe><style style="height: 18px;">
+            #zoid-pan-component-3f671a27cc_mtg6mje6mti {
+                display: inline-block;
+                position: relative;
+                width: 100%;
+                height: 100%;
+            }
+
+            #zoid-pan-component-3f671a27cc_mtg6mje6mti > iframe {
+                display: inline-block;
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                transition: opacity .2s ease-in-out;
+            }
+
+            #zoid-pan-component-3f671a27cc_mtg6mje6mti > iframe.zoid-invisible {
+                opacity: 0;
+            }
+
+            #zoid-pan-component-3f671a27cc_mtg6mje6mti > iframe.zoid-visible {
+                opacity: 1;
+        }
+        </style></div></div></div></div></div>
+
+                </div>
+                <div id="divcard-expiration_0" data-fieldtype="card-expiration" class="form-control DLocalExpiration">
+
+
+
+
+
+<div data-isgeneratepaymentbuttonfield="True" id="GATEWAYFIELD_card-expiration_0"><div id="credit-card-wrapper" class="DlocalField DlocalField--empty"><div id="95a437b1-f30f-27c4-9f36-32dd91e5c55d" style="height: 18px;"><div style="height: 100%;"><div id="zoid-expiration-component-7679f0b2b4_mtg6mje6mti"><iframe allowtransparency="true" name="__zoid__expiration_component__eyJ1aWQiOiJ6b2lkLWV4cGlyYXRpb24tY29tcG9uZW50LTc2NzlmMGIyYjRfbXRnNm1qZTZtdGkiLCJjb250ZXh0IjoiaWZyYW1lIiwidGFnIjoiZXhwaXJhdGlvbi1jb21wb25lbnQiLCJ2ZXJzaW9uIjoiOV8wXzU0IiwiY2hpbGREb21haW4iOiJodHRwczovL3N0YXRpYy1zYW5kYm94LmRsb2NhbC5jb20iLCJwYXJlbnREb21haW4iOiJodHRwczovL2FwaW15YWNfcWEuYXNzaXN0Y2FyZC5jb20iLCJwYXJlbnQiOnsidHlwZSI6InBhcmVudCIsImRpc3RhbmNlIjowfSwicHJvcHMiOnsidHlwZSI6InJhdyIsInZhbHVlIjoie1wib25DaGlsZEFjdGlvblwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwiMWMyZTMwYmZiNF9tdGc2bWplNm10aVwiLFwibmFtZVwiOlwib25DaGlsZEFjdGlvblwifX0sXCJvblBhcmVudEFjdGlvblwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwiMDA0NTk2ZGM3MV9tdGc2bWplNm10aVwiLFwibmFtZVwiOlwib25QYXJlbnRBY3Rpb25cIn19LFwibWVyY2hhbnRTdHlsZXNcIjp7XCJtZXJjaGFudENzc1J1bGVzXCI6e1wiYmFzZVwiOntcImZvbnRTaXplXCI6XCIxM3B4XCIsXCJmb250RmFtaWx5XCI6XCJzYW5zLXNlcmlmXCIsXCJmb250V2VpZ2h0XCI6XCI0MDBcIixcImNvbG9yXCI6XCIjNGE0YTRhXCIsXCI6OnBsYWNlaG9sZGVyXCI6e1wiY29sb3JcIjpcImdyYXlcIn0sXCJjYXJldENvbG9yXCI6XCIjNGE0YTRhXCJ9fSxcIm1lcmNoYW50Q2xhc3Nlc1wiOntcImJhc2VcIjpcIkRsb2NhbEZpZWxkXCIsXCJpbnZhbGlkXCI6XCJEbG9jYWxGaWVsZC0taW52YWxpZFwiLFwiZW1wdHlcIjpcIkRsb2NhbEZpZWxkLS1lbXB0eVwiLFwiY29tcGxldGVcIjpcIkRsb2NhbEZpZWxkLS1jb21wbGV0ZVwiLFwiZm9jdXNcIjpcIkRsb2NhbEZpZWxkLS1mb2N1c1wiLFwiYXV0b2ZpbGxlZFwiOlwiRGxvY2FsRmllbGQtLWF1dG9maWxsZWRcIn0sXCJtZXJjaGFudEZvbnRzXCI6bnVsbCxcIm1lcmNoYW50TG9jYWxlXCI6XCJlc1wiLFwibWVyY2hhbnRQbGFjZWhvbGRlcnNcIjpcIk1NL0FBXCIsXCJtZXJjaGFudENzc1J1bGVzUmVzdWx0Q2xhc3Nlc1wiOm51bGwsXCJtZXJjaGFudENhcmRJY29uQ29sb3JcIjpudWxsLFwibWVyY2hhbnRDYXJkSW52YWxpZEljb25Db2xvclwiOm51bGx9LFwiZmllbGRzXCI6e1wiZmllbGRzRXJyb3JzXCI6e1wiY3Z2XCI6bnVsbCxcImV4cGlyYXRpb25cIjpudWxsLFwibnVtYmVyXCI6bnVsbH0sXCJmaWVsZHNWYWx1ZXNcIjp7XCJjdnZcIjpcIlwiLFwiZXhwaXJhdGlvblwiOlwiXCIsXCJudW1iZXJcIjpcIlwifSxcImZpZWxkc0ZpbmlzaFwiOntcImN2dlwiOmZhbHNlLFwiZXhwaXJhdGlvblwiOmZhbHNlLFwibnVtYmVyXCI6ZmFsc2V9LFwicGluRXJyb3JzXCI6e1wicGluXCI6bnVsbCxcIm9sZFBpblwiOm51bGwsXCJuZXdQaW5cIjpudWxsfSxcInBpblZhbHVlc1wiOntcInBpblwiOlwiXCIsXCJvbGRQaW5cIjpcIlwiLFwibmV3UGluXCI6XCJcIn0sXCJwaW5GaW5pc2hcIjp7XCJwaW5cIjpmYWxzZSxcIm9sZFBpblwiOmZhbHNlLFwibmV3UGluXCI6ZmFsc2V9LFwiaXNDb21wbGV0ZVwiOmZhbHNlLFwiaXNFbXB0eVwiOnRydWUsXCJpc0ZvY3VzXCI6ZmFsc2UsXCJpc0F1dG9maWxsZWRcIjpmYWxzZSxcImZvcmNlQmx1clwiOmZhbHNlLFwiZm9yY2VDbGVhclwiOmZhbHNlLFwiZm9yY2VGb2N1c1wiOmZhbHNlLFwiZm9yY2VVbm1vdW50XCI6ZmFsc2UsXCJmb3JjZURlc3Ryb3lcIjpmYWxzZSxcImNvbmZpZ1wiOntcInR5cGVcIjpcImV4cGlyYXRpb25cIixcImFwaUtleVwiOlwiN2IyZDJmMWYtYTBhMi00ZTI4LTkyN2EtOGNhZjBmNDhhNGMyXCIsXCJjb3VudHJ5XCI6XCJBUlwiLFwiZ3VpZFwiOlwiOTVhNDM3YjEtZjMwZi0yN2M0LTlmMzYtMzJkZDkxZTVjNTVkXCIsXCJwYXJlbnRHVUlEXCI6XCIxODg4OGUyOC03MGVlLWUxNGMtN2MyNC1kZmIzYzQ5YWQwYjdcIixcImNhcmRJbmZvcm1hdGlvbkltYWdlXCI6bnVsbCxcImNhcmRJbmZvcm1hdGlvbkRhdGFcIjpudWxsLFwibWFpbkZpZWxkXCI6XCJwYW5cIn19LFwiZ3VpZFwiOlwiOTVhNDM3YjEtZjMwZi0yN2M0LTlmMzYtMzJkZDkxZTVjNTVkXCIsXCJwYXJlbnRHVUlEXCI6XCIxODg4OGUyOC03MGVlLWUxNGMtN2MyNC1kZmIzYzQ5YWQwYjdcIixcImFwaUtleVwiOlwiN2IyZDJmMWYtYTBhMi00ZTI4LTkyN2EtOGNhZjBmNDhhNGMyXCIsXCJjb3VudHJ5XCI6XCJBUlwifSJ9LCJleHBvcnRzIjoie1wiaW5pdFwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwiOTMxNWEzYmM1Ml9tdGc2bWplNm10aVwiLFwibmFtZVwiOlwiV2VcIn19LFwiY2xvc2VcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcImVlYzAyZmYwMDhfbXRnNm1qZTZtdGlcIixcIm5hbWVcIjpcInFlXCJ9fSxcImNoZWNrQ2xvc2VcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcIjYzYmMzMjYzMWZfbXRnNm1qZTZtdGlcIixcIm5hbWVcIjpcImNoZWNrQ2xvc2VcIn19LFwicmVzaXplXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCJjOWIwNjc0YjM4X210ZzZtamU2bXRpXCIsXCJuYW1lXCI6XCJWZVwifX0sXCJvbkVycm9yXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCI5ZTRiMTg4OWIyX210ZzZtamU2bXRpXCIsXCJuYW1lXCI6XCJLZVwifX0sXCJzaG93XCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCI3YWQ5NzQyNDRiX210ZzZtamU2bXRpXCIsXCJuYW1lXCI6XCJnZVwifX0sXCJoaWRlXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCIyZTEwNTg3MDFmX210ZzZtamU2bXRpXCIsXCJuYW1lXCI6XCJ3ZVwifX19In0=__" title="expiration_component" id="949c334d89_mtg6mje6mti" class="zoid-visible" style="background-color: transparent; border: none;"></iframe><style style="height: 18px;">
+            #zoid-expiration-component-7679f0b2b4_mtg6mje6mti {
+                display: inline-block;
+                position: relative;
+                width: 100%;
+                height: 100%;
+            }
+
+            #zoid-expiration-component-7679f0b2b4_mtg6mje6mti > iframe {
+                display: inline-block;
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                transition: opacity .2s ease-in-out;
+            }
+
+            #zoid-expiration-component-7679f0b2b4_mtg6mje6mti > iframe.zoid-invisible {
+                opacity: 0;
+            }
+
+            #zoid-expiration-component-7679f0b2b4_mtg6mje6mti > iframe.zoid-visible {
+                opacity: 1;
+        }
+        </style></div></div></div></div></div>
+
+                </div>
+                <div id="divcard-cvv_0" data-fieldtype="card-cvv" class="form-control DLocalCVV">
+
+
+
+
+
+<div data-isgeneratepaymentbuttonfield="True" id="GATEWAYFIELD_card-cvv_0"><div id="credit-card-wrapper" class="DlocalField DlocalField--empty"><div id="ad26113b-24f7-ecc0-75f3-89d6a4162e78" style="height: 18px;"><div style="height: 100%;"><div id="zoid-cvv-component-adcc45f8e7_mtg6mje6mti"><iframe allowtransparency="true" name="__zoid__cvv_component__eyJ1aWQiOiJ6b2lkLWN2di1jb21wb25lbnQtYWRjYzQ1ZjhlN19tdGc2bWplNm10aSIsImNvbnRleHQiOiJpZnJhbWUiLCJ0YWciOiJjdnYtY29tcG9uZW50IiwidmVyc2lvbiI6IjlfMF81NCIsImNoaWxkRG9tYWluIjoiaHR0cHM6Ly9zdGF0aWMtc2FuZGJveC5kbG9jYWwuY29tIiwicGFyZW50RG9tYWluIjoiaHR0cHM6Ly9hcGlteWFjX3FhLmFzc2lzdGNhcmQuY29tIiwicGFyZW50Ijp7InR5cGUiOiJwYXJlbnQiLCJkaXN0YW5jZSI6MH0sInByb3BzIjp7InR5cGUiOiJyYXciLCJ2YWx1ZSI6IntcIm9uQ2hpbGRBY3Rpb25cIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcImVkMDkzYTgzNzhfbXRnNm1qZTZtdGlcIixcIm5hbWVcIjpcIm9uQ2hpbGRBY3Rpb25cIn19LFwib25QYXJlbnRBY3Rpb25cIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcIjhjNDJiOGYyNTVfbXRnNm1qZTZtdGlcIixcIm5hbWVcIjpcIm9uUGFyZW50QWN0aW9uXCJ9fSxcIm1lcmNoYW50U3R5bGVzXCI6e1wibWVyY2hhbnRDc3NSdWxlc1wiOntcImJhc2VcIjp7XCJmb250U2l6ZVwiOlwiMTNweFwiLFwiZm9udEZhbWlseVwiOlwic2Fucy1zZXJpZlwiLFwiZm9udFdlaWdodFwiOlwiNDAwXCIsXCJjb2xvclwiOlwiIzRhNGE0YVwiLFwiOjpwbGFjZWhvbGRlclwiOntcImNvbG9yXCI6XCJncmF5XCJ9LFwiY2FyZXRDb2xvclwiOlwiIzRhNGE0YVwifX0sXCJtZXJjaGFudENsYXNzZXNcIjp7XCJiYXNlXCI6XCJEbG9jYWxGaWVsZFwiLFwiaW52YWxpZFwiOlwiRGxvY2FsRmllbGQtLWludmFsaWRcIixcImVtcHR5XCI6XCJEbG9jYWxGaWVsZC0tZW1wdHlcIixcImNvbXBsZXRlXCI6XCJEbG9jYWxGaWVsZC0tY29tcGxldGVcIixcImZvY3VzXCI6XCJEbG9jYWxGaWVsZC0tZm9jdXNcIixcImF1dG9maWxsZWRcIjpcIkRsb2NhbEZpZWxkLS1hdXRvZmlsbGVkXCJ9LFwibWVyY2hhbnRGb250c1wiOm51bGwsXCJtZXJjaGFudExvY2FsZVwiOlwiZXNcIixcIm1lcmNoYW50UGxhY2Vob2xkZXJzXCI6XCJDVlZcIixcIm1lcmNoYW50TWFza0lucHV0XCI6dHJ1ZSxcIm1lcmNoYW50Q3NzUnVsZXNSZXN1bHRDbGFzc2VzXCI6bnVsbCxcIm1lcmNoYW50Q2FyZEljb25Db2xvclwiOm51bGwsXCJtZXJjaGFudENhcmRJbnZhbGlkSWNvbkNvbG9yXCI6bnVsbH0sXCJmaWVsZHNcIjp7XCJmaWVsZHNFcnJvcnNcIjp7XCJjdnZcIjpudWxsLFwiZXhwaXJhdGlvblwiOm51bGwsXCJudW1iZXJcIjpudWxsfSxcImZpZWxkc1ZhbHVlc1wiOntcImN2dlwiOlwiXCIsXCJleHBpcmF0aW9uXCI6XCJcIixcIm51bWJlclwiOlwiXCJ9LFwiZmllbGRzRmluaXNoXCI6e1wiY3Z2XCI6ZmFsc2UsXCJleHBpcmF0aW9uXCI6ZmFsc2UsXCJudW1iZXJcIjpmYWxzZX0sXCJwaW5FcnJvcnNcIjp7XCJwaW5cIjpudWxsLFwib2xkUGluXCI6bnVsbCxcIm5ld1BpblwiOm51bGx9LFwicGluVmFsdWVzXCI6e1wicGluXCI6XCJcIixcIm9sZFBpblwiOlwiXCIsXCJuZXdQaW5cIjpcIlwifSxcInBpbkZpbmlzaFwiOntcInBpblwiOmZhbHNlLFwib2xkUGluXCI6ZmFsc2UsXCJuZXdQaW5cIjpmYWxzZX0sXCJpc0NvbXBsZXRlXCI6ZmFsc2UsXCJpc0VtcHR5XCI6dHJ1ZSxcImlzRm9jdXNcIjpmYWxzZSxcImlzQXV0b2ZpbGxlZFwiOmZhbHNlLFwiZm9yY2VCbHVyXCI6ZmFsc2UsXCJmb3JjZUNsZWFyXCI6ZmFsc2UsXCJmb3JjZUZvY3VzXCI6ZmFsc2UsXCJmb3JjZVVubW91bnRcIjpmYWxzZSxcImZvcmNlRGVzdHJveVwiOmZhbHNlLFwiY29uZmlnXCI6e1widHlwZVwiOlwiY3Z2XCIsXCJhcGlLZXlcIjpcIjdiMmQyZjFmLWEwYTItNGUyOC05MjdhLThjYWYwZjQ4YTRjMlwiLFwiY291bnRyeVwiOlwiQVJcIixcImd1aWRcIjpcImFkMjYxMTNiLTI0ZjctZWNjMC03NWYzLTg5ZDZhNDE2MmU3OFwiLFwicGFyZW50R1VJRFwiOlwiMTg4ODhlMjgtNzBlZS1lMTRjLTdjMjQtZGZiM2M0OWFkMGI3XCIsXCJjYXJkSW5mb3JtYXRpb25JbWFnZVwiOm51bGwsXCJjYXJkSW5mb3JtYXRpb25EYXRhXCI6bnVsbCxcIm1haW5GaWVsZFwiOlwicGFuXCJ9fSxcImd1aWRcIjpcImFkMjYxMTNiLTI0ZjctZWNjMC03NWYzLTg5ZDZhNDE2MmU3OFwiLFwicGFyZW50R1VJRFwiOlwiMTg4ODhlMjgtNzBlZS1lMTRjLTdjMjQtZGZiM2M0OWFkMGI3XCIsXCJhcGlLZXlcIjpcIjdiMmQyZjFmLWEwYTItNGUyOC05MjdhLThjYWYwZjQ4YTRjMlwiLFwiY291bnRyeVwiOlwiQVJcIn0ifSwiZXhwb3J0cyI6IntcImluaXRcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcIjAzNzI0NjVlNmRfbXRnNm1qZTZtdGlcIixcIm5hbWVcIjpcIldlXCJ9fSxcImNsb3NlXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCIzMDY0YTc2ODkxX210ZzZtamU2bXRpXCIsXCJuYW1lXCI6XCJxZVwifX0sXCJjaGVja0Nsb3NlXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCI4NDdmYzhhZDcxX210ZzZtamU2bXRpXCIsXCJuYW1lXCI6XCJjaGVja0Nsb3NlXCJ9fSxcInJlc2l6ZVwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwiNGE4YzJmMjdjYl9tdGc2bWplNm10aVwiLFwibmFtZVwiOlwiVmVcIn19LFwib25FcnJvclwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwiN2IxYmU5YTVhMl9tdGc2bWplNm10aVwiLFwibmFtZVwiOlwiS2VcIn19LFwic2hvd1wiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwiZmU3NTEzOTE4MV9tdGc2bWplNm10aVwiLFwibmFtZVwiOlwiZ2VcIn19LFwiaGlkZVwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwiOTM1OWU3NjdmOV9tdGc2bWplNm10aVwiLFwibmFtZVwiOlwid2VcIn19fSJ9__" title="cvv_component" id="14c384f027_mtg6mje6mti" class="zoid-visible" style="background-color: transparent; border: none;"></iframe><style style="height: 18px;">
+            #zoid-cvv-component-adcc45f8e7_mtg6mje6mti {
+                display: inline-block;
+                position: relative;
+                width: 100%;
+                height: 100%;
+            }
+
+            #zoid-cvv-component-adcc45f8e7_mtg6mje6mti > iframe {
+                display: inline-block;
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                transition: opacity .2s ease-in-out;
+            }
+
+            #zoid-cvv-component-adcc45f8e7_mtg6mje6mti > iframe.zoid-invisible {
+                opacity: 0;
+            }
+
+            #zoid-cvv-component-adcc45f8e7_mtg6mje6mti > iframe.zoid-visible {
+                opacity: 1;
+        }
+        </style></div></div></div></div></div>
+
+                </div>
+                <div id="divcarderrors_0" data-fieldtype="carderrors" class="offset-lg-1 col-lg-10">
+
+
+
+
+
+<div data-isgeneratepaymentbuttonfield="True" id="GATEWAYFIELD_carderrors_0" style="color: blue; padding-top: 5px;"></div>
+
+                </div>
+                <div id="divGATEWAYFIELD_CARDS_1" data-fieldtype="GATEWAYFIELD_CARDS" class="col-lg-6" style="padding-top: 10px;">
+
+
+
+<script>
+            $(function () {
+                console.log('idFormField', '#GATEWAYFIELD_CARDS_1');
+                $('#GATEWAYFIELD_CARDS_1').change(function () {
+                    console.log('change', '#GATEWAYFIELD_CARDS_1');
+                    //checkoutForm.setTempData([{"Key":"ContextData","Value":{"PaymentGoal":"RENEWAL","PaymentRequestIdentifier":"540-19204967-05L","PaymentAmount":1,"VisitorIp":"NADA","ListDTOFieldReturn":null,"PaymentCode":null,"OverridenGatewayConfigs":null,"DolarQuote":101,"CountryCode":540,"IssuingPointModuleCode":"MOBILE","IssuingChannelCode":"99899","IssuingCode":"99899","LanguageCode":"es","BranchNumber":0,"GatewayImplementationCode":"DLocal_LocalUrlNotPci_OnlinePayment_NoSplit_InmediateApproval","RecurringPayment":false,"BusinessDocumentType":false,"BusinessName":null,"ProductCode":"5L","RateCode":"99719","ContextParams":{"CurrentCulture":"es","CountryCode":540,"IssuingPointModuleCode":"MOBILE","IssuingCode":"99899","BranchCode":0,"RateCode":"99719","PaymentGoal":"RENEWAL","ProductCode":"5L","BaseAmmount":1,"PaymentRequestIdentifier":"540-19204967-05L","isDirectSale":false,"Pax1Email":"renovas2@yopmail.com","Pax1Nombre":"RENOVAS2","Pax1Apellido":"R","DolarQuote":101,"CurrencySymbol_UI":"ARS"}}},{"Key":"dicUrls","Value":"{\r\n  \"url_UpdateField\": \"https://apimyac_qa.assistcard.com/Api/Payment/UpdateField\",\r\n  \"url_ValidateField\": \"https://apimyac_qa.assistcard.com/Api/Payment/ValidateField\",\r\n  \"url_SelectComboChanged\": \"https://apimyac_qa.assistcard.com/Api/Payment/SelectComboChanged\",\r\n  \"url_SubmitCheckoutForm\": \"https://apimyac_qa.assistcard.com/Api/Payment/SubmitCheckoutForm\"\r\n}"},{"Key":"bAddJquery","Value":"True"},{"Key":"NextFieldInLeftColumn","Value":false},{"Key":"DicFieldsInLeftPosition","Value":{"GATEWAYFIELD_CARDS_1":true}}]);
+
+                    checkoutForm.updateField('GATEWAYFIELD_INSTALLMENTS', '1', 'https://apimyac_qa.assistcard.com/Api/Payment/UpdateField');
+                });
+
+                if ('True') //si esto es true, se puede actualizar los hijos
+                {
+
+                     console.log('idFormField', '#GATEWAYFIELD_CARDS_1');
+                        console.log('bFieldCombo', 'True');
+                        //checkoutForm.setTempData([{"Key":"ContextData","Value":{"PaymentGoal":"RENEWAL","PaymentRequestIdentifier":"540-19204967-05L","PaymentAmount":1,"VisitorIp":"NADA","ListDTOFieldReturn":null,"PaymentCode":null,"OverridenGatewayConfigs":null,"DolarQuote":101,"CountryCode":540,"IssuingPointModuleCode":"MOBILE","IssuingChannelCode":"99899","IssuingCode":"99899","LanguageCode":"es","BranchNumber":0,"GatewayImplementationCode":"DLocal_LocalUrlNotPci_OnlinePayment_NoSplit_InmediateApproval","RecurringPayment":false,"BusinessDocumentType":false,"BusinessName":null,"ProductCode":"5L","RateCode":"99719","ContextParams":{"CurrentCulture":"es","CountryCode":540,"IssuingPointModuleCode":"MOBILE","IssuingCode":"99899","BranchCode":0,"RateCode":"99719","PaymentGoal":"RENEWAL","ProductCode":"5L","BaseAmmount":1,"PaymentRequestIdentifier":"540-19204967-05L","isDirectSale":false,"Pax1Email":"renovas2@yopmail.com","Pax1Nombre":"RENOVAS2","Pax1Apellido":"R","DolarQuote":101,"CurrencySymbol_UI":"ARS"}}},{"Key":"dicUrls","Value":"{\r\n  \"url_UpdateField\": \"https://apimyac_qa.assistcard.com/Api/Payment/UpdateField\",\r\n  \"url_ValidateField\": \"https://apimyac_qa.assistcard.com/Api/Payment/ValidateField\",\r\n  \"url_SelectComboChanged\": \"https://apimyac_qa.assistcard.com/Api/Payment/SelectComboChanged\",\r\n  \"url_SubmitCheckoutForm\": \"https://apimyac_qa.assistcard.com/Api/Payment/SubmitCheckoutForm\"\r\n}"},{"Key":"bAddJquery","Value":"True"},{"Key":"NextFieldInLeftColumn","Value":false},{"Key":"DicFieldsInLeftPosition","Value":{"GATEWAYFIELD_CARDS_1":true}}]);
+                        checkoutForm.updateField('GATEWAYFIELD_INSTALLMENTS', '1', 'https://apimyac_qa.assistcard.com/Api/Payment/UpdateField');
+                 
+                
+                 }
+            });
+        </script>
+
+    <script>
+        $(function () {
+            $("#GATEWAYFIELD_CARDS_1").change(function () {
+                checkoutForm.selectComboChanged('GATEWAYFIELD_CARDS', '1', true, 'https://apimyac_qa.assistcard.com/Api/Payment/SelectComboChanged');
+            });
+            console.log('updateField', '1');
+
+            checkoutForm.selectComboChanged('GATEWAYFIELD_CARDS', '1',true, 'https://apimyac_qa.assistcard.com/Api/Payment/SelectComboChanged');//lo ejecuto al terminar la carga
+        });
+    </script>
+
+            <div class="form-group" data-isgeneratepaymentbuttonfield="True">
+                <label for="lblGATEWAYFIELD_CARDS_1" style="display:inline-block">Tarjeta</label>
+                <select class="form-control custom-select" id="GATEWAYFIELD_CARDS_1" name="GATEWAYFIELD_CARDS_1" disabled="">
+                        <option value="2" data-dependentobject="">VISA</option>
+                        <option value="3" data-dependentobject="">MASTERCARD</option>
+                        <option value="1" data-dependentobject="">AMEX</option>
+                        <option value="5" data-dependentobject="">DINERS</option>
+                        <option value="9" data-dependentobject="">VISA Debito</option>
+                </select>
+            </div>
+</div>
+                <div id="divGATEWAYFIELD_INSTALLMENTS_1" data-fieldtype="GATEWAYFIELD_INSTALLMENTS" class="col-lg-6" style="padding-top: 10px;">
+
+
+
+
+    <script>
+        $(function () {
+            $("#GATEWAYFIELD_INSTALLMENTS_1").change(function () {
+                checkoutForm.selectComboChanged('GATEWAYFIELD_INSTALLMENTS', '1', true, 'https://apimyac_qa.assistcard.com/Api/Payment/SelectComboChanged');
+            });
+            console.log('updateField', '1');
+
+            checkoutForm.selectComboChanged('GATEWAYFIELD_INSTALLMENTS', '1',true, 'https://apimyac_qa.assistcard.com/Api/Payment/SelectComboChanged');//lo ejecuto al terminar la carga
+        });
+    </script>
+
+            <div class="form-select" data-isgeneratepaymentbuttonfield="True">
+                <label for="lblGATEWAYFIELD_INSTALLMENTS_1" style="display:inline-block">Cuotas</label>
+                <select class="form-control custom-select" id="GATEWAYFIELD_INSTALLMENTS_1" name="GATEWAYFIELD_INSTALLMENTS_1">
+                        <option value="1" data-dependentobject="1|ARS 1">1 cuota de ARS 1 (Sin interés)</option>
+                        <option value="2" data-dependentobject="1|ARS 1">2 cuotas de ARS 1 (Sin interés)</option>
+                        <option value="3" data-dependentobject="1|ARS 1">3 cuotas de ARS 0 (Sin interés)</option>
+                        <option value="4" data-dependentobject="1|ARS 1">4 cuotas de ARS 0 (Sin interés)</option>
+                        <option value="6" data-dependentobject="1|ARS 1">6 cuotas de ARS 0</option>
+                        <option value="7" data-dependentobject="1|ARS 1">7 cuotas de ARS 0</option>
+                        <option value="8" data-dependentobject="1|ARS 1">8 cuotas de ARS 0</option>
+                        <option value="9" data-dependentobject="1|ARS 1">9 cuotas de ARS 0</option>
+                        <option value="10" data-dependentobject="2|ARS 2">10 cuotas de ARS 0</option>
+                        <option value="11" data-dependentobject="1|ARS 1">11 cuotas de ARS 0</option>
+                        <option value="12" data-dependentobject="2|ARS 2">12 cuotas de ARS 0</option>
+                </select>
+            </div>
+                <input type="hidden" id="GATEWAYFIELD_INSTALLMENTS_1_DependentObject" name="GATEWAYFIELD_INSTALLMENTS_1_DependentObject" value="1|ARS 1">
+</div>
+                <div id="divGATEWAYFIELD_CARDHOLDERFULLNAME_1" data-fieldtype="GATEWAYFIELD_CARDHOLDERFULLNAME" class="col-lg-6">
+
+
+
+
+
+
+        <div class="form-group" data-isgeneratepaymentbuttonfield="False">
+            <label for="lblGATEWAYFIELD_CARDHOLDERFULLNAME_1" style="display:inline-block">Nombre Completo en la Tarjeta </label>
+            <div class="error-msj">
+<input class="form-control" id="GATEWAYFIELD_CARDHOLDERFULLNAME_1" name="GATEWAYFIELD_CARDHOLDERFULLNAME_1" placeholder="" required="true" type="text" value="">
+            </div>
+        </div>
+
+                </div>
+                <div id="divGATEWAYFIELD_DOCUMENTTYPES_1" data-fieldtype="GATEWAYFIELD_DOCUMENTTYPES" class="col-lg-6">
+
+
+
+
+<script>
+            $(function () {
+                console.log('idFormField', '#GATEWAYFIELD_DOCUMENTTYPES_1');
+                $('#GATEWAYFIELD_DOCUMENTTYPES_1').change(function () {
+                    console.log('change', '#GATEWAYFIELD_DOCUMENTTYPES_1');
+                    //checkoutForm.setTempData([{"Key":"ContextData","Value":{"PaymentGoal":"RENEWAL","PaymentRequestIdentifier":"540-19204967-05L","PaymentAmount":1,"VisitorIp":"NADA","ListDTOFieldReturn":null,"PaymentCode":null,"OverridenGatewayConfigs":null,"DolarQuote":101.0,"CountryCode":540,"IssuingPointModuleCode":"MOBILE","IssuingChannelCode":"99899","IssuingCode":"99899","LanguageCode":"es","BranchNumber":0,"GatewayImplementationCode":"DLocal_LocalUrlNotPci_OnlinePayment_NoSplit_InmediateApproval","RecurringPayment":false,"BusinessDocumentType":false,"BusinessName":null,"ProductCode":"5L","RateCode":"99719","ContextParams":{"CurrentCulture":"es","CountryCode":540,"IssuingPointModuleCode":"MOBILE","IssuingCode":"99899","BranchCode":0,"RateCode":"99719","PaymentGoal":"RENEWAL","ProductCode":"5L","BaseAmmount":1,"PaymentRequestIdentifier":"540-19204967-05L","isDirectSale":false,"Pax1Email":"renovas2@yopmail.com","Pax1Nombre":"RENOVAS2","Pax1Apellido":"R","DolarQuote":101.0,"CurrencySymbol_UI":"ARS"}}},{"Key":"dicUrls","Value":{"url_UpdateField":"https://apimyac_qa.assistcard.com/Api/Payment/UpdateField","url_ValidateField":"https://apimyac_qa.assistcard.com/Api/Payment/ValidateField","url_SelectComboChanged":"https://apimyac_qa.assistcard.com/Api/Payment/SelectComboChanged","url_SubmitCheckoutForm":"https://apimyac_qa.assistcard.com/Api/Payment/SubmitCheckoutForm"}},{"Key":"bAddJquery","Value":true},{"Key":"NextFieldInLeftColumn","Value":true},{"Key":"DicFieldsInLeftPosition","Value":{"GATEWAYFIELD_CARDS_1":true,"GATEWAYFIELD_INSTALLMENTS_1":false,"GATEWAYFIELD_CARDHOLDERFULLNAME_1":true,"GATEWAYFIELD_DOCUMENTTYPES_1":false}}]);
+
+                    checkoutForm.updateField('GATEWAYFIELD_DOCUMENTNUMBER', '1', 'https://apimyac_qa.assistcard.com/Api/Payment/UpdateField');
+                });
+
+                if ('True') //si esto es true, se puede actualizar los hijos
+                {
+
+                     console.log('idFormField', '#GATEWAYFIELD_DOCUMENTTYPES_1');
+                        console.log('bFieldCombo', 'True');
+                        //checkoutForm.setTempData([{"Key":"ContextData","Value":{"PaymentGoal":"RENEWAL","PaymentRequestIdentifier":"540-19204967-05L","PaymentAmount":1,"VisitorIp":"NADA","ListDTOFieldReturn":null,"PaymentCode":null,"OverridenGatewayConfigs":null,"DolarQuote":101.0,"CountryCode":540,"IssuingPointModuleCode":"MOBILE","IssuingChannelCode":"99899","IssuingCode":"99899","LanguageCode":"es","BranchNumber":0,"GatewayImplementationCode":"DLocal_LocalUrlNotPci_OnlinePayment_NoSplit_InmediateApproval","RecurringPayment":false,"BusinessDocumentType":false,"BusinessName":null,"ProductCode":"5L","RateCode":"99719","ContextParams":{"CurrentCulture":"es","CountryCode":540,"IssuingPointModuleCode":"MOBILE","IssuingCode":"99899","BranchCode":0,"RateCode":"99719","PaymentGoal":"RENEWAL","ProductCode":"5L","BaseAmmount":1,"PaymentRequestIdentifier":"540-19204967-05L","isDirectSale":false,"Pax1Email":"renovas2@yopmail.com","Pax1Nombre":"RENOVAS2","Pax1Apellido":"R","DolarQuote":101.0,"CurrencySymbol_UI":"ARS"}}},{"Key":"dicUrls","Value":{"url_UpdateField":"https://apimyac_qa.assistcard.com/Api/Payment/UpdateField","url_ValidateField":"https://apimyac_qa.assistcard.com/Api/Payment/ValidateField","url_SelectComboChanged":"https://apimyac_qa.assistcard.com/Api/Payment/SelectComboChanged","url_SubmitCheckoutForm":"https://apimyac_qa.assistcard.com/Api/Payment/SubmitCheckoutForm"}},{"Key":"bAddJquery","Value":true},{"Key":"NextFieldInLeftColumn","Value":true},{"Key":"DicFieldsInLeftPosition","Value":{"GATEWAYFIELD_CARDS_1":true,"GATEWAYFIELD_INSTALLMENTS_1":false,"GATEWAYFIELD_CARDHOLDERFULLNAME_1":true,"GATEWAYFIELD_DOCUMENTTYPES_1":false}}]);
+                        checkoutForm.updateField('GATEWAYFIELD_DOCUMENTNUMBER', '1', 'https://apimyac_qa.assistcard.com/Api/Payment/UpdateField');
+                 
+                
+                 }
+            });
+        </script>
+
+
+            <div class="form-group" data-isgeneratepaymentbuttonfield="False">
+                <label for="lblGATEWAYFIELD_DOCUMENTTYPES_1" style="display:inline-block">Tipo de Documento</label>
+                <select class="form-control custom-select" id="GATEWAYFIELD_DOCUMENTTYPES_1" name="GATEWAYFIELD_DOCUMENTTYPES_1">
+                        <option value="3" data-dependentobject="">DNI</option>
+                        <option value="1" data-dependentobject="">Pasaporte</option>
+                        <option value="2" data-dependentobject="">CI</option>
+                        <option value="4" data-dependentobject="">LC</option>
+                        <option value="5" data-dependentobject="">LE</option>
+                </select>
+            </div>
+
+                </div>
+                <div id="divGATEWAYFIELD_DOCUMENTNUMBER_1" data-fieldtype="GATEWAYFIELD_DOCUMENTNUMBER" class="col-lg-6">
+
+
+
+
+        <script>
+            $(function () {
+                $("#GATEWAYFIELD_DOCUMENTNUMBER_1").on('change keyup paste', function () {
+                    $("#GATEWAYFIELD_DOCUMENTNUMBER_1")[0].setCustomValidity('');
+                });
+            });
+        </script>
+
+        <div class="form-group" data-isgeneratepaymentbuttonfield="False">
+            <label for="lblGATEWAYFIELD_DOCUMENTNUMBER_1" style="display:inline-block">DNI</label>
+            <div class="error-msj">
+<input class="form-control" id="GATEWAYFIELD_DOCUMENTNUMBER_1" name="GATEWAYFIELD_DOCUMENTNUMBER_1" pattern="^[0-9]{7,9}$" placeholder="Sólo números" required="true" title="El nro de documento es inválido" type="text" value="">
+            </div>
+        </div>
+</div>
+                <div id="divGATEWAYFIELD_EMAIL_1" data-fieldtype="GATEWAYFIELD_EMAIL" class="col-lg-6">
+
+
+
+
+
+
+        <div class="form-group" data-isgeneratepaymentbuttonfield="False">
+            <label for="lblGATEWAYFIELD_EMAIL_1" style="display:inline-block">Email</label>
+            <div class="error-msj">
+<input class="form-control" id="GATEWAYFIELD_EMAIL_1" name="GATEWAYFIELD_EMAIL_1" placeholder="Ingrese su email" required="true" type="email" value="">
+            </div>
+        </div>
+
+                </div>
+                <div id="divGATEWAYFIELD_PURCHASEREQUESTOBJECT_1" data-fieldtype="GATEWAYFIELD_PURCHASEREQUESTOBJECT" class="col-lg-6">
+
+
+
+
+
+
+        <div class="form-group" data-isgeneratepaymentbuttonfield="True">
+            <label for="lblGATEWAYFIELD_PURCHASEREQUESTOBJECT_1" style="display:inline-block"></label>
+            <div class="error-msj">
+<input class="form-control" id="GATEWAYFIELD_PURCHASEREQUESTOBJECT_1" name="GATEWAYFIELD_PURCHASEREQUESTOBJECT_1" placeholder="" type="text" value="" style="display: none;">
+            </div>
+        </div>
+
+                </div>
+
+            <br>
+
+            <div class="row">               
+                <div class="col-sm-2">
+                    <button class="btn btn-info" style="width: 100%; margin-top: 22px;" type="submit">Enviar</button>
+                </div>
+            </div>
+
+            
+        </div>
+    </div> 
+</form>
+
+
+<script type="text/javascript">    
+
+    setTimeout(function () {
+      
+        if ($("#hfPaymentInstallments")) {
+            installments = $("#hfPaymentInstallments").val();
+        }
+        CGMainScript.formName = 'formDLocal'
+        CGMainScript.amount = '1';
+        CGMainScript.currencySymbol = 'ARS';
+        CGMainScript.gatewayImplementationCode = 'DLocal_LocalUrlNotPci_OnlinePayment_NoSplit_InmediateApproval';
+        $(function () {
+            CGMainScript.initGatewayJs();
+
+            $("#GATEWAYFIELD_PURCHASEREQUESTOBJECT_1").removeAttr("disabled");
+            if (gateway.indexOf("dlocal_") >= 0) {
+                $("#GATEWAYFIELD_PURCHASEREQUESTOBJECT_1").val(JSON.stringify(_DTODLocalPurchaseRequest));
+            }
+        });
+
+        var contextData = '{"PaymentGoal":"RENEWAL","PaymentRequestIdentifier":"540-19204967-05L","PaymentAmount":1,"VisitorIp":"NADA","ListDTOFieldReturn":null,"PaymentCode":null,"OverridenGatewayConfigs":null,"DolarQuote":101.0,"CountryCode":540,"IssuingPointModuleCode":"MOBILE","IssuingChannelCode":"99899","IssuingCode":"99899","LanguageCode":"es","BranchNumber":0,"GatewayImplementationCode":"DLocal_LocalUrlNotPci_OnlinePayment_NoSplit_InmediateApproval","RecurringPayment":false,"BusinessDocumentType":false,"BusinessName":null,"ProductCode":"5L","RateCode":"99719","ContextParams":{"CurrentCulture":"es","CountryCode":540,"IssuingPointModuleCode":"MOBILE","IssuingCode":"99899","BranchCode":0,"RateCode":"99719","PaymentGoal":"RENEWAL","ProductCode":"5L","BaseAmmount":1,"PaymentRequestIdentifier":"540-19204967-05L","isDirectSale":false,"Pax1Email":"renovas2@yopmail.com","Pax1Nombre":"RENOVAS2","Pax1Apellido":"R","DolarQuote":101.0,"CurrencySymbol_UI":"ARS"}}';
+        $("#ContextData").val(contextData);
+
+    }, 2000);
+
+    </script>
+
+    <!-- FIN DE ARCHIVOS DE FORMULARIOS DE GATEWAY EN EL BODY -->
+</body>
+</html>
