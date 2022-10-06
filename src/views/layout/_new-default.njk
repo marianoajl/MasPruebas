@@ -5,33 +5,24 @@
         {% block meta %}
             {% include "layout/_metatags.njk" %}
         {% endblock %}
-
         <title>Asistencia al Viajero - Más que un seguro de viaje ASSIST CARD.</title>
-
+        <link rel="stylesheet" type="text/css" media="screen" href="content/css/vendors/bootstrap-5.0.2/bootstrap.css">
         {% block css %}
             {# Bloque de estilos por página #}
         {% endblock %}
-        
-        <link rel="stylesheet" type="text/css" media="screen" href="content/css/vendors/bootstrap-5.0.2/bootstrap.css">
-        <link rel="stylesheet" type="text/css" media="screen" href="content/css/vendors/select2-4.1.0/select2.css">
     </head>
     <body>
-        {# -- I C O N S -- #}
-        {% block icons %}
-            {% include "components/_icons.njk" %}
-        {% endblock %}
-        
         {# -- H E A D E R -- #}
         {% block header %}
-            {% include "layout/_no-header.njk" %}
+            {% include "layout/_header.njk" %}
         {% endblock %}
 
         {# content #}
         <main class="main">
             {# -- A S I D E - M E N U -- #}  
-            {% block asideMenu %}
-                {% include "layout/_no-aside.njk" %}
-            {% endblock %}
+            {# {% block asideMenu %}
+                {% include "layout/_aside-menu.njk" %}
+            {% endblock %} #}
 
             {# -- C O N T E N T -- #}
             {% block content %}
@@ -39,27 +30,21 @@
             {% endblock %}
 
             {# -- F O O T E R -- #}
-            {# {% block footer%}
+            {% block footer%}
                 {% include "layout/_footer-n.njk" %}
-            {% endblock %} #}
+            {% endblock %}
         </main>
+
+        {# <footer class="footer"></footer> #}
 
         {% block content2 %}
             {# Modales, toast, loaders #}
         {% endblock %}
-        <script src="content/js/vendors/jQuery-v3.6.1/jQuery-v3.6.1.js"></script> 
+
         <script src="content/js/vendors/bootstrap-5.0.2/bootstrap.bundle.js"></script>
-        <script src="content/js/vendors/select2-4.1.0/select2.js"></script>
-        <script>
-            $('.js-header__select').select2(
-                {
-                    theme: 'lang',
-                    minimumResultsForSearch: Infinity
-                }
-            );
-        </script>
         {% block js %}
             {# Bloque de js por página #}
         {% endblock %}
+        {# <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> #}
     </body>
 </html>

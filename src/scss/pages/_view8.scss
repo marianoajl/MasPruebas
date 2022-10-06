@@ -1,0 +1,15 @@
+/* --- M A I N - C O N T E N T --- */
+.section {
+    grid-area: content;
+    background: var(--red-icon);
+}
+
+@media (min-width: 900px) {
+    
+    .section {
+        // grid-area: content;
+        // background: var(--red-icon);
+        min-height: 100vh;
+    }
+}
+

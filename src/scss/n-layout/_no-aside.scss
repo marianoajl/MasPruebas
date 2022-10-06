@@ -1,0 +1,12 @@
+.aside {
+    display: none;
+}
+
+@media (min-width: 900px) {
+    
+    .aside {
+        grid-area: menu;
+        display: block;
+        background: var(--other-blue);
+    }
+}
