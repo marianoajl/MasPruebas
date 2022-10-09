@@ -1,0 +1,15 @@
+@use "n-mixin" as *;
+
+.aside {
+    display: none;
+}
+
+@media (min-width: 850px) {
+
+    .aside {
+        grid-area: aside;
+        background: var(--other-blue);
+
+        @include id;
+    }
+}

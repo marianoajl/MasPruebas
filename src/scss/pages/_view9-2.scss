@@ -1,0 +1,8 @@
+@use "n-mixin" as *;
+
+.main {
+    grid-area: header;
+    background: var(--red-icon);
+
+    @include id;
+}

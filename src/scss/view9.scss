@@ -1,0 +1,22 @@
+@use "variables-nativas"; // variables
+@use "base"; // body - reset 
+// @use "base/bg-images";
+
+// Layout
+@use "n-layout/view9/layout";
+
+@use "n-layout/view9/header";
+@use "n-layout/view9/aside";
+@use "n-layout/view9/footer";
+
+// page
+@use "pages/view9";
+
+// S E G U N D A   I N S T A N C I A
+
+// @use "n-layout/view9/layout-2/header";
+// @use "n-layout/view9/layout-2/aside";
+// @use "n-layout/view9/layout-2/footer";
+
+// // page
+// @use "pages/view9-2";

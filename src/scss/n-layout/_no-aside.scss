@@ -5,8 +5,8 @@
 @media (min-width: 900px) {
     
     .aside {
+        // width:100%;
         grid-area: menu;
-        display: block;
         background: var(--other-blue);
     }
 }

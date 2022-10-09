@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        {# Bloque metatags #}
+        {% block meta %}
+            {% include "layout/_metatags.njk" %}
+        {% endblock %}
+
+        <title>Asistencia al Viajero - Más que un seguro de viaje ASSIST CARD.</title>
+
+        {% block css %}
+            {# Bloque de estilos por página #}
+        {% endblock %}
+        
+        <link rel="stylesheet" type="text/css" media="screen" href="content/css/vendors/bootstrap-5.0.2/bootstrap.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="content/css/vendors/select2-4.1.0/select2.css">
+    </head>
+    <body>
+        <div class="layout">
+            {# -- I C O N S -- #}
+            {% block icons %}
+                {% include "components/_icons.njk" %}
+            {% endblock %}
+
+            {# -- H E A D E R -- #}
+            {% block header %}
+                {% include "layout/view9/_header.njk" %}
+            {% endblock %}
+
+            {# content #}
+            {# -- A S I D E - M E N U -- #}  
+            {% block asideMenu %}
+                {% include "layout/view9/_aside.njk" %}
+            {% endblock %}
+
+            {# -- C O N T E N T -- #}
+            {% block content %}
+                {# main content block #}
+            {% endblock %}
+
+            {# -- F O O T E R -- #}
+            {% block footer%}
+                {% include "layout/view9/_footer.njk" %}
+            {% endblock %}
+        </div>
+
+        {% block content2 %}
+            {# Modales, toast, loaders #}
+        {% endblock %}
+        <script src="content/js/vendors/jQuery-v3.6.1/jQuery-v3.6.1.js"></script> 
+        <script src="content/js/vendors/bootstrap-5.0.2/bootstrap.bundle.js"></script>
+        <script src="content/js/vendors/select2-4.1.0/select2.js"></script>
+        <script>
+            $('.js-header__select').select2(
+                {
+                    theme: 'lang',
+                    minimumResultsForSearch: Infinity
+                }
+            );
+        </script>
+        {% block js %}
+            {# Bloque de js por página #}
+        {% endblock %}
+    </body>
+</html>

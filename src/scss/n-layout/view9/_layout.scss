@@ -1,0 +1,18 @@
+.layout {
+    width: var(--width-100);
+    max-width: var(--max-main-width);
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: var(--header-height) minmax(calc(var(--min-height) - var(--header-height)), auto) var(--card-height); // header - main (su altura está cubre todo el viewport menos la altura del header) - footer
+    grid-template-areas: "header" "main" "footer";
+
+}
+
+@media (min-width: 850px) {
+
+    .layout {
+        grid-template-columns: var(--w-aside-menu) 1fr;
+        grid-template-rows: var(--header-height) minmax(calc(var(--min-height) - var(--header-height)), auto) var(--card-height); // header - main (su altura está cubre todo el viewport menos la altura del header) - footer
+        grid-template-areas: "header header" "aside main" "aside footer"; 
+    }
+}

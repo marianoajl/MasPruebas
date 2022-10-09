@@ -1,0 +1,10 @@
+@use "n-mixin" as *;
+
+.main {
+    grid-area: main;
+    background: var(--red-icon);
+
+    @include id;
+    // grid-template-columns: repeat(8, 1fr);
+    // grid-gap: 0 21px;
+}

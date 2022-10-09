@@ -1,0 +1,7 @@
+@mixin id {
+    display: grid;
+    place-items: center;
+    
+    font-size: var(--fs-32);
+    font-weight: var(--fw-600);
+} 

@@ -1,0 +1,8 @@
+@use "n-mixin" as *;
+
+.footer {
+    grid-area: footer;
+    background: var(--green);
+
+    @include id;
+}
