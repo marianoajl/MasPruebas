@@ -14,7 +14,41 @@ veamos, porque desarrollo también tiene que cargar los estilos de cada página 
 
 {% block content %}
     <main class="main">
-        M A I N
+        <form action="/view5.html" method="GET" class="form">
+            <section class="form-content">
+                <div class="form-float">
+                    <input class="input" type="text" id="nombre" placeholder="nombre" required />
+                    <label for="nombre" class="label" >
+                        nombre
+                    </label>
+                </div>
+                <div class="form-float">
+                    <input class="input" type="text" id="apellido" placeholder="apellido" required />
+                    <label for="apellido" class="label">
+                        apellido
+                    </label>
+                </div>
+                <div class="form-float">
+                    <input class="input" type="date" id="fecha" required>
+                    <label for="fecha" class="label">
+                        fecha
+                    </label>
+                </div>
+                <div class="form-float">
+                    <input class="input" type="password" placeholder="password" id="password" required>
+                    <label for="password" class="label">
+                        password
+                    </label>
+                </div>
+                <div class="form-float">
+                    <input class="input" type="email" id="email" placeholder="mariano@gmail.com" required>
+                    <label for="email" class="label">
+                        email
+                    </label>
+                </div>
+            </section>
+            <button type="submit" class="button-prueba">main</button>
+        </form>
     </main>
 {% endblock %}
 

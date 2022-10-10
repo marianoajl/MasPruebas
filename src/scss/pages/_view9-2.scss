@@ -3,6 +3,9 @@
 .main {
     grid-area: header;
     background: var(--red-icon);
-
     @include id;
+}
+
+.button-prueba {
+    @include btn-main;
 }

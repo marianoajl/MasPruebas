@@ -2,6 +2,7 @@
 
 .aside {
     display: none;
+    @include id;
 }
 
 @media (min-width: 850px) {
@@ -9,7 +10,5 @@
     .aside {
         grid-area: aside;
         background: var(--other-blue);
-
-        @include id;
     }
 }

@@ -3,6 +3,5 @@
 .header {
     grid-area: header;
     background: var(--red);
-
     @include id;
 }

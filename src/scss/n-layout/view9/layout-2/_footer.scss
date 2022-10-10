@@ -3,6 +3,5 @@
 .footer {
     grid-area: main;
     background: var(--green);
-
     @include id;
 }

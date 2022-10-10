@@ -3,6 +3,5 @@
 .aside {
     grid-area: footer;
     background: var(--other-blue);
-
     @include id;
 }
