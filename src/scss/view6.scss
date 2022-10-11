@@ -1,0 +1,12 @@
+@use "variables-nativas"; // variables
+@use "base"; // body - reset 
+@use "base/bg-images";
+
+// Layout
+@use "n-layout/header";
+@use "n-layout/view4/menu-content";
+@use "n-layout/no-aside";
+@use "n-layout/view4/footer";
+
+// page
+@use "pages/view6";

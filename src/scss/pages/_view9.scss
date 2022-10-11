@@ -20,7 +20,7 @@
 .form-content {
     justify-self: stretch;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     grid-auto-rows: min-content;
     grid-gap: 10px 25px;
     margin: 0 0 var(--margin-bottom-28) 0;
@@ -37,7 +37,7 @@
         display: block;
         width: 100%;
         padding: 0 8px 4px 8px;
-        font-size: var(--fs-16);
+        font-size: var(--fs-14);
         border-bottom: 1px solid var(--very-light-grey);
         background: transparent;
         color: inherit;
@@ -57,7 +57,7 @@
         top: 18px;
         left: 8px;
         padding: 0;
-        font-size: var(--fs-16);
+        font-size: var(--fs-14);
         font-weight: normal;
         text-transform: capitalize;
         color: inherit;
@@ -77,15 +77,15 @@
 
 // Deja el espacio (padding) para agregar el asterico a la derecha del <input>
 // No funciona en todos los campos. Investigar
-input:required {
+input[required] {
     padding: 0 25px 4px 8px; // top right bottom left
-    
+
     &::after {
-        content:"";
+        content: "";
         display: inline-block;
         position: absolute;
         background: url("../img/icons/asterisco.svg") no-repeat center;
-        width: 8px; 
+        width: 8px;
         height: 8px;
         bottom: 29px;
         right: 8px;

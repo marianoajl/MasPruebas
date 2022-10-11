@@ -9,7 +9,7 @@ veamos, porque desarrollo también tiene que cargar los estilos de cada página 
 
 {# Bloque de estilos especificos de éstá página #}
 {% block css %}
-    <link rel="stylesheet" type="text/css" media="screen" href="content/css/view5.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="content/css/view6.css">
 {% endblock %}
 
 {% block content %}
@@ -17,20 +17,32 @@ veamos, porque desarrollo también tiene que cargar los estilos de cada página 
         <article class="view">
             <h6 class="assistance__name">asistencia médica</h6>
             <h4 class="assistance__question">¿Dónde te encuentras?</h4>
-            <form action="/view5.html" method="get" class="assistance__form needs-validation" novalidate>
+            <form action="/view9.html" method="get" class="assistance__form needs-validation" novalidate>
                 <section class="assistance__event">
-                    <input type="radio" name="travelGroup" id="1"/>
-                    <label for="1">Passenger #1</label>
-                    <input type="radio" name="travelGroup" id="2"/>
-                    <label for="2">Passenger #2</label>
-                    <input type="radio" name="travelGroup" id="3"/>
-                    <label for="3">Passenger #3</label>
-                    <input type="radio" name="travelGroup" id="4"/>
-                    <label for="4">Passenger #4</label>
-                    <input type="radio" name="travelGroup" id="5"/>
-                    <label for="5">Passenger #5</label>
-                    <input type="radio" name="travelGroup" id="6"/>
-                    <label for="6">Passenger #6</label>
+                    <label>
+                        <input type="radio" name="travelGroup"/>
+                        Passenger #1
+                    </label>
+                    <label>
+                        <input type="radio" name="travelGroup"/>
+                        Passenger #2
+                    </label>
+                    <label>
+                        <input type="radio" name="travelGroup"/>
+                        Passenger #3
+                    </label>
+                    <label>
+                        <input type="radio" name="travelGroup"/>
+                        Passenger #4
+                    </label>
+                    <label>
+                        <input type="radio" name="travelGroup"/>
+                        Passenger #5
+                    </label>
+                    <label>
+                        <input type="radio" name="travelGroup"/>
+                        Passenger #6
+                    </label>
                 </section>
                 <button type="submit" class="btn btn-outline-primary">continuar</button>
             </form>
