@@ -8,7 +8,7 @@ console.log(data.length);
 
 let emails = [];
 
-for (const hola in data) {
+for (const hola in data) { // recorre el JSON
     console.log(data[hola]);
     let penal = data[hola];
     const div = document.createElement('DIV');
@@ -16,13 +16,9 @@ for (const hola in data) {
     div.classList.add("div");
     const span = document.createElement("SPAN");
     span.classList.add("span");
-    span.textContent = penal.email;
+    span.textContent = `${penal.id}: ${penal.email}`;
     div.appendChild(span);
     body.appendChild(div);
-
-
-    // console.log (penal.email);
-    // emails.push(penal.email);
 }
 
 
