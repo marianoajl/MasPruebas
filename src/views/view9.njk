@@ -14,40 +14,52 @@ veamos, porque desarrollo también tiene que cargar los estilos de cada página 
 
 {% block content %}
     <main class="main">
-        <form action="/view5.html" method="GET" class="form">
+        <form action="/view.html" method="GET" class="form">
             <section class="form-content">
                 <div class="form-float">
-                    <input class="input" type="text" id="nombre" placeholder="nombre" required />
-                    <label for="nombre" class="label" >
+                    <input id="nombre" class="input" type="text" placeholder="nombre" required>
+                    <label for="nombre" class="label">
                         nombre
                     </label>
+                    <span class="asterisk"></span>
                 </div>
                 <div class="form-float">
-                    <input class="input" type="text" id="apellido" placeholder="apellido" required />
+                    <input id="apellido" class="input" type="text" placeholder="apellido" required>
                     <label for="apellido" class="label">
                         apellido
                     </label>
+                    <span class="asterisk"></span>
                 </div>
                 <div class="form-float">
-                    <input class="input" type="date" id="fecha" required>
+                    <input id="fecha" class="input" type="date" required>
                     <label for="fecha" class="label">
                         fecha
                     </label>
+                    <span class="asterisk"></span>
                 </div>
                 <div class="form-float">
-                    <input class="input" type="password" placeholder="password" id="password" required>
+                    <input id="password" class="input" type="password" placeholder="password" required>
                     <label for="password" class="label">
                         password
                     </label>
+                    <span class="asterisk"></span>
                 </div>
                 <div class="form-float">
-                    <input class="input" type="email" id="email" placeholder="mariano@gmail.com" required>
+                    <input id="email" class="input" type="email" placeholder="mariano@gmail.com">
                     <label for="email" class="label">
                         email
                     </label>
+                    <span class="asterisk"></span>
+                </div>
+                <div class="form-float">
+                    <textarea id="textarea" class="textarea" maxlength='1000' placeholder="mariano" required></textarea>
+                    <label for="textarea" class="label">
+                        Describa lo sucedido
+                    </label>
+                    <span class="asterisk"></span>
                 </div>
             </section>
-            <button type="submit" class="button-prueba">main</button>
+            <button type="submit" class="button-prueba">guardar</button>
         </form>
     </main>
 {% endblock %}
