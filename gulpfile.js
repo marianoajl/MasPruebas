@@ -250,7 +250,7 @@ function dev() {
    });
    gulp.watch("src/scss/**/*.scss", styles);
    gulp.watch("src/js/**/*.js", scripts);
-   gulp.watch("src/js/**/*.json", scripts); // copia los *.json y los deja en /dist/content/js
+   // gulp.watch("src/js/**/*.json", scripts); // copia los *.json y los deja en /dist/content/js
    gulp.watch("src/views/**/*.njk", views);
 }
 

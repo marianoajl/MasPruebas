@@ -41,9 +41,40 @@
             background: #fff;
         }
 
+        .div {
+            padding: 5px;
+        }
+
+        .span {
+            font-size: 1rem;
+        }
+
         .h1 {
             font-size: 3rem;
             color: red;
+        }
+
+        @media (max-width: 768px) {
+            html {
+                font-size: 14px;
+            }
+
+            div {
+                place-items: start;
+            }
+        }
+
+        @media (max-width: 360px) {
+            html {
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 260px) {
+
+            html {
+                font-size: 10px;
+            }
         }
     </style>
 </head>
